@@ -1,0 +1,73 @@
+body{
+    background-color: antiquewhite;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 40px;
+}
+ 
+h1{
+    text-align: center;
+}
+ 
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+ 
+.tab-btn {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+}
+ 
+.tab-btn:hover {
+    border-color: #3A5A40;
+}
+ 
+
+.tab-btn.active {
+    background: #3A5A40;
+    color: white;
+    border-color: #3A5A40;
+}
+ 
+
+.tab-content {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+}
+ 
+.mini-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+}
+ 
+.tab-content h2 {
+    margin: 0 0 4px;
+}
+ 
+.tab-content .role {
+    color: #6b6558;
+    margin: 0 0 20px;
+}
+ 
+.tab-content .bio {
+    line-height: 1.6;
+    text-align: left;
+}
