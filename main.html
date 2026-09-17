@@ -9,25 +9,88 @@
 <body>
     <h1>Биография самой лучшей самой крутой самой офигенной команды</h1>
 
+    <!-- Переключатели (скрытые radio-кнопки) -->
+    <input type="radio" name="tab" id="tab-home" class="tab-radio" checked>
+    <input type="radio" name="tab" id="tab-davlatbek" class="tab-radio">
+    <input type="radio" name="tab" id="tab-abylai" class="tab-radio">
+    <input type="radio" name="tab" id="tab-kamilla" class="tab-radio">
+    <input type="radio" name="tab" id="tab-liana" class="tab-radio">
+
+    <!-- Кнопки-табы (связаны с radio через label) -->
     <div class="tabs">
-        <button class="tab-btn active" data-name="home">Главная старница</button>
-        <button class="tab-btn" data-name="Khasanov Davlatbek">Khasanov Davlatbek</button>
-        <button class="tab-btn" data-name="Musa Abylai">Musa Abylai</button>
-        <button class="tab-btn" data-name="Zhumabayeva Kamilla">Zhumabayeva Kamilla</button>
-        <button class="tab-btn" data-name="Kanatova Liana">Kanatova Liana</button>
+        <label for="tab-home" class="tab-btn">Главная страница</label>
+        <label for="tab-davlatbek" class="tab-btn">Khasanov Davlatbek</label>
+        <label for="tab-abylai" class="tab-btn">Musa Abylai</label>
+        <label for="tab-kamilla" class="tab-btn">Zhumabayeva Kamilla</label>
+        <label for="tab-liana" class="tab-btn">Kanatova Liana</label>
     </div>
 
-   
-    <div class="tab-content" id="bioContent">
-        <div class="avatar" id="bioAvatar"></div>
-        <h2 id="bioName"></h2>
-        <p class="role" id="bioRole"></p>
-        <p class="bio" id="bioText"></p>
+    <!-- Главная сетка карточек -->
+    <div class="home-grid">
+        <label for="tab-davlatbek" class="home-card">
+            <div class="avatar">
+                <img src="img/davlatbek.jpg" alt="Khasanov Davlatbek">
+            </div>
+            <p>Khasanov Davlatbek</p>
+        </label>
+
+        <label for="tab-abylai" class="home-card">
+            <div class="avatar">
+                <img src="img/abylai.jpg" alt="Musa Abylai">
+            </div>
+            <p>Musa Abylai</p>
+        </label>
+
+        <label for="tab-kamilla" class="home-card">
+            <div class="avatar">
+                <img src="img/kamilla.jpg" alt="Zhumabayeva Kamilla">
+            </div>
+            <p>Zhumabayeva Kamilla</p>
+        </label>
+
+        <label for="tab-liana" class="home-card">
+            <div class="avatar">
+                <img src="img/liana.jpg" alt="Kanatova Liana">
+            </div>
+            <p>Kanatova Liana</p>
+        </label>
     </div>
 
-   
-    <div class="home-grid" id="homeGrid"></div>
+    <!-- Блоки биографий участников -->
+    <div class="tab-content" id="bio-davlatbek">
+        <div class="avatar">
+            <img src="img/davlatbek.jpg" alt="Khasanov Davlatbek">
+        </div>
+        <h2>Khasanov Davlatbek</h2>
+        <p class="role">Лидер команды</p>
+        <p class="bio">Отвечает за разработку проекта, координацию работы команды и распределение задач между участниками.</p>
+    </div>
 
-    <script src="main.js"></script>
+    <div class="tab-content" id="bio-abylai">
+        <div class="avatar">
+            <img src="img/abylai.jpg" alt="Musa Abylai">
+        </div>
+        <h2>Musa Abylai</h2>
+        <p class="role">Главный за Backend</p>
+        <p class="bio">Отвечает за серверную часть проекта, обработку данных и работу функций сайта.</p>
+    </div>
+
+    <div class="tab-content" id="bio-kamilla">
+        <div class="avatar">
+            <img src="img/kamilla.jpg" alt="Zhumabayeva Kamilla">
+        </div>
+        <h2>Zhumabayeva Kamilla</h2>
+        <p class="role">Главная за Frontend</p>
+        <p class="bio">Отвечает за внешний вид сайта, интерфейс и удобство взаимодействия с пользователем. я лох</p>
+    </div>
+
+    <div class="tab-content" id="bio-liana">
+        <div class="avatar">
+            <img src="img/liana.jpg" alt="Kanatova Liana">
+        </div>
+        <h2>Kanatova Liana</h2>
+        <p class="role">Главная за дизайн</p>
+        <p class="bio">Отвечает за дизайн проекта, визуальное оформление и создание единого стиля сайта.</p>
+    </div>
 </body>
 </html>

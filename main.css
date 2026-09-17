@@ -1,15 +1,20 @@
-body{
+body {
     background-color: antiquewhite;
     font-family: Georgia, 'Times New Roman', Times, serif;
     margin: 0;
     padding: 40px;
 }
 
-h1{
+h1 {
     text-align: center;
 }
 
+/* Скрываем служебные radio-кнопки */
+.tab-radio {
+    display: none;
+}
 
+/* Вкладки (Label вместо Button) */
 .tabs {
     display: flex;
     justify-content: center;
@@ -26,19 +31,43 @@ h1{
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
+    user-select: none;
 }
 
 .tab-btn:hover {
     border-color: #3A5A40;
 }
 
-.tab-btn.active {
+/* Стилизация активной кнопки через CSS-селектор :checked */
+#tab-home:checked ~ .tabs label[for="tab-home"],
+#tab-davlatbek:checked ~ .tabs label[for="tab-davlatbek"],
+#tab-abylai:checked ~ .tabs label[for="tab-abylai"],
+#tab-kamilla:checked ~ .tabs label[for="tab-kamilla"],
+#tab-liana:checked ~ .tabs label[for="tab-liana"] {
     background: #3A5A40;
     color: white;
     border-color: #3A5A40;
 }
 
+/* По умолчанию скрываем все биографии и сетку */
+.tab-content,
+.home-grid {
+    display: none;
+}
 
+/* Показываем нужный контент в зависимости от выбранного радио-баттона */
+#tab-home:checked ~ .home-grid {
+    display: grid;
+}
+
+#tab-davlatbek:checked ~ #bio-davlatbek,
+#tab-abylai:checked ~ #bio-abylai,
+#tab-kamilla:checked ~ #bio-kamilla,
+#tab-liana:checked ~ #bio-liana {
+    display: block;
+}
+
+/* Стили для био карточки */
 .tab-content {
     max-width: 500px;
     margin: 0 auto;
@@ -48,7 +77,6 @@ h1{
     padding: 30px;
     text-align: center;
 }
-
 
 .avatar {
     width: 100px;
@@ -85,9 +113,8 @@ h1{
     text-align: left;
 }
 
-
+/* Сетка карточек на главной */
 .home-grid {
-    display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     max-width: 900px;
@@ -108,6 +135,8 @@ h1{
     padding: 20px;
     text-align: center;
     cursor: pointer;
+    display: block;
+    user-select: none;
 }
 
 .home-card:hover {
@@ -125,4 +154,5 @@ h1{
 .home-card p {
     margin: 0;
     font-weight: bold;
+    color: initial;
 }
