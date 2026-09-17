@@ -1,0 +1,2 @@
+1. Frontend: Kamilla and Liana
+2. Backend: Davlatbek and Abylai
