@@ -4,22 +4,22 @@ const people = {
     "Khasanov Davlatbek": {
         role: "Лидер команды",
         bio: "Отвечает за разработку проекта, координацию работы команды и распределение задач между участниками.",
-        photo: "davlatbek.jpg"
+        photo: "img/davlatbek.jpg"
     },
     "Musa Abylai": {
         role: "Главный за Backend",
         bio: "Отвечает за серверную часть проекта, обработку данных и работу функций сайта.",
-        photo: "abylai.jpg"
+        photo: "img/abylai.jpg"
     },
     "Zhumabayeva Kamilla": {
         role: "Главная за Frontend",
         bio: "Отвечает за внешний вид сайта, интерфейс и удобство взаимодействия с пользователем.",
-        photo: "kamilla.jpg"
+        photo: "img/kamilla.jpg"
     },
     "Kanatova Liana": {
         role: "Главная за дизайн",
         bio: "Отвечает за дизайн проекта, визуальное оформление и создание единого стиля сайта.",
-        photo: "liana.jpg"
+        photo: "img/liana.jpg"
     }
 };
 
