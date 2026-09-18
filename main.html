@@ -16,7 +16,7 @@
     <input type="radio" name="tab" id="tab-kamilla" class="tab-radio">
     <input type="radio" name="tab" id="tab-liana" class="tab-radio">
 
-    <!-- Кнопки-табы (связаны с radio через label) -->
+    <!-- Кнопки-табы -->
     <div class="tabs">
         <label for="tab-home" class="tab-btn">Главная страница</label>
         <label for="tab-davlatbek" class="tab-btn">Khasanov Davlatbek</label>
@@ -58,39 +58,61 @@
 
     <!-- Блоки биографий участников -->
     <div class="tab-content" id="bio-davlatbek">
-        <div class="avatar">
-            <img src="img/davlatbek.jpg" alt="Khasanov Davlatbek">
+        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
+        <div class="bio-inner">
+            <div class="avatar">
+                <img src="img/davlatbek.jpg" alt="Khasanov Davlatbek">
+            </div>
+            <h2>Khasanov Davlatbek</h2>
+            <p class="role">Лидер команды</p>
+            <p class="age">Возраст: 19 лет</p>
+            <p class="bio">Отвечает за разработку проекта, координацию работы команды и распределение задач между участниками.</p>
         </div>
-        <h2>Khasanov Davlatbek</h2>
-        <p class="role">Лидер команды</p>
-        <p class="bio">Отвечает за разработку проекта, координацию работы команды и распределение задач между участниками.</p>
+        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
     </div>
 
     <div class="tab-content" id="bio-abylai">
-        <div class="avatar">
-            <img src="img/abylai.jpg" alt="Musa Abylai">
+        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
+        <div class="bio-inner">
+            <div class="avatar">
+                <img src="img/abylai.jpg" alt="Musa Abylai">
+            </div>
+            <h2>Musa Abylai</h2>
+            <p class="role">Главный за Backend</p>
+            <p class="age">Возраст: 19 лет</p>
+            <p class="bio">Отвечает за серверную часть проекта, обработку данных и работу функций сайта.</p>
         </div>
-        <h2>Musa Abylai</h2>
-        <p class="role">Главный за Backend</p>
-        <p class="bio">Отвечает за серверную часть проекта, обработку данных и работу функций сайта.</p>
+        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
     </div>
 
     <div class="tab-content" id="bio-kamilla">
-        <div class="avatar">
-            <img src="img/kamilla.jpg" alt="Zhumabayeva Kamilla">
+        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
+        <div class="bio-inner">
+            <div class="avatar">
+                <img src="img/kamilla.jpg" alt="Zhumabayeva Kamilla">
+            </div>
+            <h2>Zhumabayeva Kamilla</h2>
+            <p class="role">Главная за Frontend</p>
+            <p class="age">Возраст: 19 лет</p>
+            <p class="bio">Отвечает за внешний вид сайта, интерфейс и удобство взаимодействия с пользователем.</p>
         </div>
-        <h2>Zhumabayeva Kamilla</h2>
-        <p class="role">Главная за Frontend</p>
-        <p class="bio">Отвечает за внешний вид сайта, интерфейс и удобство взаимодействия с пользователем. я лох</p>
+        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
     </div>
 
     <div class="tab-content" id="bio-liana">
-        <div class="avatar">
-            <img src="img/liana.jpg" alt="Kanatova Liana">
+        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
+        <div class="bio-inner">
+            <div class="avatar">
+                <img src="img/liana.jpg" alt="Kanatova Liana">
+            </div>
+            <h2>Kanatova Liana</h2>
+            <p class="role">Главная за дизайн</p>
+            <p class="age">Возраст: 19 лет</p>
+            <p class="bio">Отвечает за дизайн проекта, визуальное оформление и создание единого стиля сайта.</p>
         </div>
-        <h2>Kanatova Liana</h2>
-        <p class="role">Главная за дизайн</p>
-        <p class="bio">Отвечает за дизайн проекта, визуальное оформление и создание единого стиля сайта.</p>
+        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
     </div>
+
+    <script src="main.js"></script>
 </body>
 </html>
