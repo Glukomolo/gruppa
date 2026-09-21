@@ -15,6 +15,7 @@
     <input type="radio" name="tab" id="tab-abylai" class="tab-radio">
     <input type="radio" name="tab" id="tab-kamilla" class="tab-radio">
     <input type="radio" name="tab" id="tab-liana" class="tab-radio">
+    <input type="radio" name="tab" id="tab-task-1" class="tab-radio">
 
     <!-- Кнопки-табы -->
     <div class="tabs">
@@ -23,6 +24,7 @@
         <label for="tab-abylai" class="tab-btn">Musa Abylai</label>
         <label for="tab-kamilla" class="tab-btn">Zhumabayeva Kamilla</label>
         <label for="tab-liana" class="tab-btn">Kanatova Liana</label>
+        <label for="tab-task-1" class="tab-btn">Task 1</label>
     </div>
 
     <!-- Главная сетка карточек -->
@@ -54,6 +56,12 @@
             </div>
             <p>Kanatova Liana</p>
         </label>
+         <label for="tab-task-1" class="home-card">
+            <div class="avatar">
+                <img src="" alt="Task-1">
+            </div>
+            <p>Task-1</p>
+        </label>
     </div>
 
     <!-- Блоки биографий участников -->
@@ -84,6 +92,7 @@
                 <span class="tag">Java</span>
                 <span class="tag">Python</span>
                 <span class="tag">C++</span>
+
             </div>
             </div>
         </div>
@@ -200,6 +209,37 @@
         </div>
         <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
     </div>
+
+
+  <div class="tab-content" id="bio-task-1">
+
+    <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">
+        &larr;
+    </button>
+
+    <div class="bio-inner">
+
+        <div class="avatar">
+            <img src="" alt="Task-1">
+        </div>
+
+        <h2>Task-1</h2>
+
+        <div class="button">
+    <button id="create">Создать элемент</button>
+    <button id="delete">Удалить элемент</button>
+    <button id="body">Body</button>
+    <button id="d-body">Удалить Body</button>
+        </div>
+        <div id="container"> </div>
+
+        <div id="create-elements"></div>
+    
+    </div>
+    <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">
+        &rarr;
+    </button>
+   </div>
 
     <script src="main.js"></script>
 </body>

@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'tab-davlatbek',
         'tab-abylai',
         'tab-kamilla',
-        'tab-liana'
+        'tab-liana',
+        'tab-task-1'
     ];
 
     // Находим все кнопки со стрелками
@@ -58,4 +59,47 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'ArrowRight') switchTab(1);
         }
     });
+});
+
+const createButton = document.getElementById('create');
+const deleteButton = document.getElementById('delete');
+const createdElements = document.getElementById('create-elements');
+
+createButton.addEventListener('click', () => {
+    const newElement = document.createElement('p');
+
+    newElement.textContent = 'Новый элемент';
+
+    createdElements.appendChild(newElement);
+});
+
+deleteButton.addEventListener('click', () => {
+    const lastElement = createdElements.lastElementChild;
+
+    if (lastElement) {
+        lastElement.remove();
+    }
+});
+
+
+
+
+const addBodyButton = document.getElementById('body');
+const removeBodyButton = document.getElementById('d-body');
+
+addBodyButton.addEventListener('click', () => {
+    const p = document.createElement('p');
+    p.textContent = 'Новый текст';
+    p.classList.add('body-text');
+
+    document.body.appendChild(p);
+});
+
+removeBodyButton.addEventListener('click', () => {
+    const all = document.querySelectorAll('.body-text');
+    const last = all[all.length - 1];
+
+    if (last) {
+        last.remove();
+    }
 });
