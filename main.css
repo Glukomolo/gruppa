@@ -269,3 +269,10 @@ h1 {
 .button button:hover {
     background: #2d4531;
 }
+
+.active {
+    background-color: #3A5A40;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+}
