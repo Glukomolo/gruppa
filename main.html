@@ -16,6 +16,7 @@
     <input type="radio" name="tab" id="tab-kamilla" class="tab-radio">
     <input type="radio" name="tab" id="tab-liana" class="tab-radio">
     <input type="radio" name="tab" id="tab-task-1" class="tab-radio">
+    <input type="radio" name="tab" id="tab-task-2" class="tab-radio">
 
     <!-- Кнопки-табы -->
     <div class="tabs">
@@ -25,6 +26,7 @@
         <label for="tab-kamilla" class="tab-btn">Zhumabayeva Kamilla</label>
         <label for="tab-liana" class="tab-btn">Kanatova Liana</label>
         <label for="tab-task-1" class="tab-btn">Task 1</label>
+        <label for="tab-task-2" class="tab-btn">Task 2</label>
     </div>
 
     <!-- Главная сетка карточек -->
@@ -219,9 +221,6 @@
 
     <div class="bio-inner">
 
-        <div class="avatar">
-            <img src="" alt="Task-1">
-        </div>
 
         <h2>Task-1</h2>
 
@@ -240,7 +239,30 @@
         &rarr;
     </button>
    </div>
+   <div class="tab-content" id="bio-task-2">
+     <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">
+        &larr;
+    </button>
 
+    <div class="bio-inner">
+        <h2>Task-2</h2>
+
+        <!-- Элемент, у которого будем переключать класс active -->
+        <div id="target-element" class="box">Тестовый элемент</div>
+
+        <!-- Кнопка для переключения класса -->
+        <div class="button">
+            <button id="toggle-btn">Переключить active</button>
+        </div>
+
+        <!-- Элемент p для вывода списка классов -->
+        <p id="classes-output" style="margin-top: 15px; font-weight: bold;"></p>
+    </div>
+
+     <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">
+        &rarr;
+    </button>
+   </div>
     <script src="main.js"></script>
 </body>
 </html>

@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'tab-abylai',
         'tab-kamilla',
         'tab-liana',
-        'tab-task-1'
+        'tab-task-1',
+        'tab-task-2'
     ];
 
     // Находим все кнопки со стрелками
@@ -103,3 +104,24 @@ removeBodyButton.addEventListener('click', () => {
         last.remove();
     }
 });
+
+// --- Task 2: Управление классами элементов ---
+const targetElement = document.getElementById('target-element');
+const toggleButton = document.getElementById('toggle-btn');
+const classesOutput = document.getElementById('classes-output');
+
+if (toggleButton && targetElement && classesOutput) {
+    toggleButton.addEventListener('click', () => {
+        // Переключаем класс active (добавляет, если нет, и удаляет, если есть)
+        targetElement.classList.toggle('active');
+
+        // Получаем текущие классы элемента в виде строки
+        const currentClasses = targetElement.className || 'нет классов';
+
+        // Выводим в консоль
+        console.log('Текущие классы элемента:', currentClasses);
+
+        // Выводим в абзац <p> рядом
+        classesOutput.textContent = `Текущие классы элемента: ${currentClasses}`;
+    });
+}
