@@ -125,3 +125,55 @@ if (toggleButton && targetElement && classesOutput) {
         classesOutput.textContent = `Текущие классы элемента: ${currentClasses}`;
     });
 }
+// --- Пункт 1: Найдите элемент по ID и измените его текст на "Привет, мир!" ---
+const targetTextElement = document.getElementById('target-text');
+if (targetTextElement) {
+    targetTextElement.textContent = "Привет, мир!";
+}
+
+
+// --- Пункт 2: Создайте новый элемент <div> с классом new-div и текстом "Я новый элемент" ---
+const newDiv = document.createElement('div');
+newDiv.className = 'new-div';
+newDiv.textContent = "Я новый элемент";
+
+const task1Card = document.getElementById('task1-card');
+if (task1Card) {
+    task1Card.appendChild(newDiv);
+}
+
+
+// --- Пункт 3: Удалите элемент с классом old-element ---
+const oldElement = document.querySelector('.old-element');
+if (oldElement) {
+    oldElement.remove();
+}
+
+
+// --- Пункт 4: Создаем элемент <p> с переключением стилей туда-обратно по клику ---
+const clickableParagraph = document.createElement('p');
+clickableParagraph.textContent = "Это изменяемый абзац.";
+clickableParagraph.style.cursor = 'pointer';
+clickableParagraph.style.userSelect = 'none';
+
+let isChanged = false; // Флаг для переключения обратно
+
+clickableParagraph.addEventListener('click', () => {
+    if (!isChanged) {
+        // Первое состояние (меняем)
+        clickableParagraph.style.color = '#2f5d44';
+        clickableParagraph.style.fontSize = '22px';
+        clickableParagraph.style.fontWeight = 'bold';
+        isChanged = true;
+    } else {
+        // Возвращаем обратно
+        clickableParagraph.style.color = '';
+        clickableParagraph.style.fontSize = '';
+        clickableParagraph.style.fontWeight = '';
+        isChanged = false;
+    }
+});
+
+if (task1Card) {
+    task1Card.appendChild(clickableParagraph);
+}
