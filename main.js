@@ -82,9 +82,6 @@ deleteButton.addEventListener('click', () => {
     }
 });
 
-
-
-
 const addBodyButton = document.getElementById('body');
 const removeBodyButton = document.getElementById('d-body');
 
@@ -105,26 +102,6 @@ removeBodyButton.addEventListener('click', () => {
     }
 });
 
-// --- Task 2: Управление классами элементов ---
-const targetElement = document.getElementById('target-element');
-const toggleButton = document.getElementById('toggle-btn');
-const classesOutput = document.getElementById('classes-output');
-
-if (toggleButton && targetElement && classesOutput) {
-    toggleButton.addEventListener('click', () => {
-        // Переключаем класс active (добавляет, если нет, и удаляет, если есть)
-        targetElement.classList.toggle('active');
-
-        // Получаем текущие классы элемента в виде строки
-        const currentClasses = targetElement.className || 'нет классов';
-
-        // Выводим в консоль
-        console.log('Текущие классы элемента:', currentClasses);
-
-        // Выводим в абзац <p> рядом
-        classesOutput.textContent = `Текущие классы элемента: ${currentClasses}`;
-    });
-}
 // --- Пункт 1: Найдите элемент по ID и измените его текст на "Привет, мир!" ---
 const targetTextElement = document.getElementById('target-text');
 if (targetTextElement) {
@@ -142,13 +119,11 @@ if (task1Card) {
     task1Card.appendChild(newDiv);
 }
 
-
 // --- Пункт 3: Удалите элемент с классом old-element ---
 const oldElement = document.querySelector('.old-element');
 if (oldElement) {
     oldElement.remove();
 }
-
 
 // --- Пункт 4: Создаем элемент <p> с переключением стилей туда-обратно по клику ---
 const clickableParagraph = document.createElement('p');
@@ -176,4 +151,25 @@ clickableParagraph.addEventListener('click', () => {
 
 if (task1Card) {
     task1Card.appendChild(clickableParagraph);
+}
+
+// --- Task 2: Управление классами элементов ---
+const targetElement = document.getElementById('target-element');
+const toggleButton = document.getElementById('toggle-btn');
+const classesOutput = document.getElementById('classes-output');
+
+if (toggleButton && targetElement && classesOutput) {
+    toggleButton.addEventListener('click', () => {
+        // Переключаем класс active (добавляет, если нет, и удаляет, если есть)
+        targetElement.classList.toggle('active');
+
+        // Получаем текущие классы элемента в виде строки
+        const currentClasses = targetElement.className || 'нет классов';
+
+        // Выводим в консоль
+        console.log('Текущие классы элемента:', currentClasses);
+
+        // Выводим в абзац <p> рядом
+        classesOutput.textContent = `Текущие классы элемента: ${currentClasses}`;
+    });
 }

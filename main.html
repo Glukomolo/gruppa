@@ -217,66 +217,44 @@
         </div>
         <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
     </div>
-
-
-  <div class="tab-content" id="bio-task-1">
-
-    <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">
-        &larr;
-    </button>
-
-    <div class="bio-inner">
-
-
-        <h2>Task-1</h2>
-        <div class="card" id="task1-card">
-    
-    <!-- Элемент для Пункта 1 (поиск по ID) -->
-    <p id="target-text">Старый текст</p>
-    
-    <!-- Элемент для Пункта 3 (класс, который нужно удалить) -->
-    <div class="old-element" style="background: rgba(255, 0, 0, 0.1); padding: 5px; margin: 5px 0; border-radius: 4px;">
-        Этот элемент должен быть удален (old-element)
-    </div>
-        <div class="button">
-    <button id="create">Создать элемент</button>
-    <button id="delete">Удалить элемент</button>
-    <button id="body">Body</button>
-    <button id="d-body">Удалить Body</button>
+    <!-- TASK 1 -->
+    <div class="tab-content" id="bio-task-1">
+        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
+        <div class="bio-inner">
+            <h2>Task-1</h2>
+            <div class="card" id="task1-card">
+                <p id="target-text">Старый текст</p>
+                <div class="old-element" style="background: rgba(255, 0, 0, 0.1); padding: 5px; margin: 5px 0; border-radius: 4px;">
+                    Этот элемент должен быть удален (old-element)
+                </div>
+                <div class="button">
+                    <button id="create">Создать элемент</button>
+                    <button id="delete">Удалить элемент</button>
+                    <button id="body">Body</button>
+                    <button id="d-body">Удалить Body</button>
+                </div>
+                <div id="container"></div>
+                <div id="create-elements"></div>
+            </div>
         </div>
-        <div id="container"> </div>
-
-        <div id="create-elements"></div>
-    
+        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
     </div>
-    <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">
-        &rarr;
-    </button>
-   </div>
-   <div class="tab-content" id="bio-task-2">
-     <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">
-        &larr;
-    </button>
 
-    <div class="bio-inner">
-        <h2>Task-2</h2>
-
-        <!-- Элемент, у которого будем переключать класс active -->
-        <div id="target-element" class="box">Тестовый элемент</div>
-
-        <!-- Кнопка для переключения класса -->
-        <div class="button">
-            <button id="toggle-btn">Переключить active</button>
+    <!-- TASK 2 -->
+    <div class="tab-content" id="bio-task-2">
+        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
+        <div class="bio-inner">
+            <h2>Task-2</h2>
+            <div id="target-element" class="box" style="margin: 15px 0; padding: 10px; border: 1px dashed #3A5A40;">
+                Тестовый элемент
+            </div>
+            <div class="button">
+                <button id="toggle-btn">Переключить active</button>
+            </div>
+            <p id="classes-output" style="margin-top: 15px; font-weight: bold;"></p>
         </div>
-
-        <!-- Элемент p для вывода списка классов -->
-        <p id="classes-output" style="margin-top: 15px; font-weight: bold;"></p>
+        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
     </div>
-
-     <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">
-        &rarr;
-    </button>
-   </div>
     <script src="main.js"></script>
 </body>
 </html>
