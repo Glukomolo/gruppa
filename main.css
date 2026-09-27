@@ -352,12 +352,37 @@ h1 {
     width: 30px;
     height: 30px;
 }
-<<<<<<< HEAD
 
 #table-container td.tableColor {
     background: #3A5A40;
-=======
+}
+
 #tab-task-4:checked ~ #bio-task-4 {
     display: block;
->>>>>>> 347f1e5def60033b66f27b5dc06ec8e19569e34a
+
+}
+
+
+body.dark-theme {
+    background-color: #1e1e1e;
+    color: #e8e6df;
+}
+
+body.dark-theme .tab-btn,
+body.dark-theme .tab-content,
+body.dark-theme .home-card {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #e8e6df;
+}
+
+body.dark-theme .tag {
+    background-color: #333;
+    color: #7fae83;
+    border-color: #7fae83;
+}
+
+body.dark-theme h1,
+body.dark-theme .tab-content h2 {
+    color: #a8d5aa;
 }
