@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'tab-liana',
         'tab-task-1',
         'tab-task-2',
-        'tab-task-3'
+        'tab-task-3',
+        'tab-task-4'
     ];
 
     // Находим все кнопки со стрелками
@@ -185,3 +186,29 @@ container.appendChild(table);
   
 });
 
+// --- Task 4: Переключение темной темы ---
+const themeToggle = document.getElementById('theme-toggle');
+
+function applyThemeLabel() {
+    if (!themeToggle) return;
+    themeToggle.textContent = document.body.classList.contains('dark-theme')
+        ? 'Светлая тема'
+        : 'Тёмная тема';
+}
+
+// Восстанавливаем сохранённую тему при загрузке страницы
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-theme');
+}
+applyThemeLabel();
+
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        localStorage.setItem(
+            'theme',
+            document.body.classList.contains('dark-theme') ? 'dark' : 'light'
+        );
+        applyThemeLabel();
+    });
+}
