@@ -18,6 +18,8 @@
     <input type="radio" name="tab" id="tab-task-1" class="tab-radio">
     <input type="radio" name="tab" id="tab-task-2" class="tab-radio">
     <input type="radio" name="tab" id="tab-task-3" class="tab-radio">
+    <input type="radio" name="tab" id="tab-task-4" class="tab-radio">
+    
 
     <!-- Кнопки-табы -->
     <div class="tabs">
@@ -29,6 +31,7 @@
         <label for="tab-task-1" class="tab-btn">Task 1</label>
         <label for="tab-task-2" class="tab-btn">Task 2</label>
         <label for="tab-task-3" class="tab-btn">Task 3</label>
+        <label for="tab-task-4" class="tab-btn">Task 4</label>
     </div>
 
     <!-- Главная сетка карточек -->
@@ -263,20 +266,35 @@
 
     <!--TASK 3-->
 
-    <div class="tab-content" id="bio-task-3">
-        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
-        <div class="bio-inner">
-            <h2>Task-3</h2>
-            <div class="button">
-                <button id="ctroki">r</button>
-                <button id="create-table" >Создать таблицу</button>
-            </div>
-            
-            
+   <div class="tab-content" id="bio-task-3">
+    <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
+    <div class="bio-inner">
+        <h2>Task-3</h2>
+        <div class="input-wrap">
+            <input class="input" type="number" id="height" placeholder="высота" min="1">
+            <input class="input" type="number" id="width" placeholder="ширина" min="1">
         </div>
-        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
+        <div class="button">
+            <button id="create-table">Создать таблицу</button>
+        </div>
+        <div id="table-container"></div>
     </div>
+    <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
+</div>
+  
     <script src="main.js"></script>
     
-</body>
+<!-- TASK 4 -->
+    <div class="tab-content" id="bio-task-4">
+        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник"></button>
+        <div class="bio-inner">
+            <div class="button">
+                <button id="theme-toggle">Сменить тему</button>
+            </div>
+        </div>
+        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник"></button>
+    </div>
 
+    <script src="main.js"></script>
+</body>
+</html>

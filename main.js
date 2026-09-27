@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'tab-kamilla',
         'tab-liana',
         'tab-task-1',
-        'tab-task-2'
+        'tab-task-2',
+        'tab-task-3'
     ];
 
     // Находим все кнопки со стрелками
@@ -153,3 +154,34 @@ if (toggleButton && targetElement && classesOutput) {
         classesOutput.textContent = `Текущие классы элемента: ${currentClasses}`;
     });
 }
+
+const createtable = document.getElementById('create-table');
+
+createtable.addEventListener('click', () => {
+    const height = parseInt(document.getElementById('height').value, 10);
+    const width = parseInt(document.getElementById('width').value, 10);
+
+    if (height <= 0 || width <= 0) {
+        alert('Введите положительные числа');
+        return;
+    }
+
+    const table = document.createElement('table');
+
+    for (let i = 0; i < height; i++) {
+        const row = document.createElement('tr');
+
+        for (let j = 0; j < width; j++) {
+            const cell = document.createElement('td');
+            row.appendChild(cell);
+        }
+
+        table.appendChild(row);
+    }
+    const container = document.getElementById('table-container');
+container.innerHTML = ''; 
+container.appendChild(table);
+
+  
+});
+
