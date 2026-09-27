@@ -341,3 +341,14 @@ h1 {
 .input::placeholder {
     color: #ddd;
 }
+
+#table-container table {
+    border-collapse: collapse;
+    margin: 20px auto 0;
+}
+
+#table-container td {
+    border: 1px solid #3A5A40;
+    width: 30px;
+    height: 30px;
+}
