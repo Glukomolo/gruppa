@@ -42,7 +42,8 @@ h1 {
 #tab-kamilla:checked ~ .tabs label[for="tab-kamilla"],
 #tab-liana:checked ~ .tabs label[for="tab-liana"],
 #tab-task-1:checked ~ .tabs label[for="tab-task-1"],
-#tab-task-2:checked ~ .tabs label[for="tab-task-2"]
+#tab-task-2:checked ~ .tabs label[for="tab-task-2"],
+#tab-task-3:checked ~ .tabs label[for="tab-task-3"]
  {
     background: #3A5A40;
     color: white;
@@ -64,7 +65,8 @@ h1 {
 #tab-kamilla:checked ~ #bio-kamilla,
 #tab-liana:checked ~ #bio-liana,
 #tab-task-1:checked ~ #bio-task-1,
-#tab-task-2:checked ~ #bio-task-2
+#tab-task-2:checked ~ #bio-task-2,
+#tab-task-3:checked ~ #bio-task-3
  {
     display: flex;
 }
