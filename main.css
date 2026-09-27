@@ -352,7 +352,12 @@ h1 {
     width: 30px;
     height: 30px;
 }
+<<<<<<< HEAD
 
 #table-container td.tableColor {
     background: #3A5A40;
+=======
+#tab-task-4:checked ~ #bio-task-4 {
+    display: block;
+>>>>>>> 347f1e5def60033b66f27b5dc06ec8e19569e34a
 }
