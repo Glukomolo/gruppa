@@ -167,17 +167,25 @@ createtable.addEventListener('click', () => {
     }
 
     const table = document.createElement('table');
+for (let i = 0; i < height; i++) {
+    const row = document.createElement('tr');
 
-    for (let i = 0; i < height; i++) {
-        const row = document.createElement('tr');
+    for (let j = 0; j < width; j++) {
+        const cell = document.createElement('td');
 
-        for (let j = 0; j < width; j++) {
-            const cell = document.createElement('td');
-            row.appendChild(cell);
-        }
-
-        table.appendChild(row);
+        cell.addEventListener('click', () => {
+            cell.classList.toggle("tableColor");
+            const output = document.getElementById("sum-color");
+            output.textContent ="Закрашено:" + countSumColor()
+            
+        });
+        
+       
+        row.appendChild(cell);
     }
+
+    table.appendChild(row);
+}
     const container = document.getElementById('table-container');
 container.innerHTML = ''; 
 container.appendChild(table);
@@ -185,3 +193,19 @@ container.appendChild(table);
   
 });
 
+const DeleteTable=document.getElementById("delete-table");
+DeleteTable.addEventListener('click',()=>{
+    const container=document.getElementById("table-container");
+    container.innerHTML = ''; 
+    const output=document.getElementById("sum-color");
+    output.textContent = "";
+
+})
+
+
+function countSumColor(){
+    const SumColor=document.querySelectorAll(
+'#table-container td.tableColor')
+return SumColor.length
+
+}
