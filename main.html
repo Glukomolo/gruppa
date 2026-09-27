@@ -263,19 +263,26 @@
 
     <!--TASK 3-->
 
-    <div class="tab-content" id="bio-task-3">
-        <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
-        <div class="bio-inner">
-            <h2>Task-3</h2>
-            <div class="button">
-                <button id="ctroki">r</button>
-                <button id="create-table" >Создать таблицу</button>
-            </div>
-            
-            
+   <div class="tab-content" id="bio-task-3">
+    <button class="nav-arrow prev-btn" type="button" aria-label="Предыдущий участник">&larr;</button>
+    <div class="bio-inner">
+        <h2>Task-3</h2>
+        <div class="input-wrap">
+            <input class="input" type="number" id="height" placeholder="высота" min="1">
+            <input class="input" type="number" id="width" placeholder="ширина" min="1">
         </div>
-        <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
+        <div class="button">
+            <button id="create-table">Создать таблицу</button>
+        </div>
+        <div id="table-container"></div>
     </div>
+    <button class="nav-arrow next-btn" type="button" aria-label="Следующий участник">&rarr;</button>
+</div>
+    
+
+
+
+
     <script src="main.js"></script>
     
 </body>
