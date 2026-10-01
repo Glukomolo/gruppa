@@ -159,14 +159,39 @@ if (toggleButton && targetElement && classesOutput) {
 const createtable = document.getElementById('create-table');
 
 createtable.addEventListener('click', () => {
-    const height = parseInt(document.getElementById('height').value, 10);
-    const width = parseInt(document.getElementById('width').value, 10);
+    const output = document.getElementById('sum-color');
+    const container = document.getElementById('table-container');
+    output.textContent = '';
+
+    container.innerHTML = '';
+    
+
+
+
+    const heightInput = document.getElementById('height').value;
+    const widthInput = document.getElementById('width').value;
+
+    if (heightInput === "" || widthInput === "") {
+        alert('Введите значения для высоты и ширины');
+        return;
+    }
+
+    const height = parseInt(heightInput, 10);
+    const width = parseInt(widthInput, 10);
+
+
+    if(isNaN(height)  ||isNaN(width) ) {
+        alert('Введите корректные числа');
+        return;
+    }
 
     if (height <= 0 || width <= 0) {
         alert('Введите положительные числа');
         return;
     }
 
+    // остальной код
+     ;
     const table = document.createElement('table');
 for (let i = 0; i < height; i++) {
     const row = document.createElement('tr');
@@ -187,9 +212,10 @@ for (let i = 0; i < height; i++) {
 
     table.appendChild(row);
 }
-    const container = document.getElementById('table-container');
+
 container.innerHTML = ''; 
 container.appendChild(table);
+
 
   
 });
