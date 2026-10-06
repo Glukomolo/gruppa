@@ -1,0 +1,80 @@
+
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 0 16px;
+  color: #222;
+}
+
+h1 {
+  margin-bottom: 16px;
+}
+
+form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+button {
+  padding: 8px 14px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 6px;
+  background: #2b6cb0;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #90cdf4;
+  outline-offset: 2px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+li span {
+  flex: 1;
+}
+
+li.done span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+li button.del {
+  background: #c53030;
+  padding: 4px 10px;
+}
+
+#status {
+  margin: 8px 0;
+  color: #555;
+  min-height: 1.4em;
+}
+
+#status.error {
+  color: #c53030;
+}
