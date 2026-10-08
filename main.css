@@ -363,6 +363,10 @@ h1 {
 
 }
 
+a {
+    text-decoration: none;
+    color:#1e1e1e;
+}
 
 body.dark-theme {
     background-color: #1e1e1e;
