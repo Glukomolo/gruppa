@@ -4,11 +4,7 @@ const todoList = document.getElementById("list");
 const todoForm = document.getElementById("add-form");
 const todoInput = document.getElementById("new-todo");
 const userIdInput = document.getElementById("user-id");
-
-
-const listModal = document.getElementById("list-modal");
-const openListBtn = document.getElementById("open-list");
-const listClose = document.getElementById("list-close");
+const countEl = document.getElementById("count");
 
 const modal = document.getElementById("task-modal");
 const editForm = document.getElementById("edit-form");
@@ -16,7 +12,6 @@ const editText = document.getElementById("edit-text");
 const editUserId = document.getElementById("edit-user-id");
 const editDone = document.getElementById("edit-done");
 const editCancel = document.getElementById("edit-cancel");
-
 
 const deleteModal = document.getElementById("delete-modal");
 const deleteText = document.getElementById("delete-text");
@@ -39,7 +34,7 @@ function clearStatusLater() {
 }
 
 function updateCount() {
-    openListBtn.textContent = "Список задач (" + todoList.children.length + ")";
+    countEl.textContent = todoList.children.length;
 }
 
 async function apiRequest(item, method, body) {
@@ -106,14 +101,6 @@ async function deleteTodo(item, li) {
         showStatus("Не удалось удалить задачу", true);
     }
 }
-
-
-openListBtn.addEventListener("click", () => listModal.showModal());
-listClose.addEventListener("click", () => listModal.close());
-
-listModal.addEventListener("click", (e) => {
-    if (e.target === listModal) listModal.close();
-});
 
 
 function openEditModal(ctx) {
