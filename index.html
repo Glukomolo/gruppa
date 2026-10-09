@@ -15,8 +15,45 @@
     <button type="submit">Добавить</button>
   </form>
 
-  <div id="status"></div>
-  <ul id="list"></ul>
+  <div class="status" id="status"></div>
+
+  <button type="button" id="open-list">Список задач</button>
+
+  <dialog id="list-modal">
+    <div class="modal-header">
+      <h2>Мои задачи</h2>
+      <button type="button" id="list-close" class="secondary">Закрыть</button>
+    </div>
+    <div class="status" id="modal-status"></div>
+    <ul id="list"></ul>
+  </dialog>
+
+  <dialog id="task-modal">
+    <form id="edit-form">
+      <h2>Редактирование задачи</h2>
+      <input type="text" id="edit-text" placeholder="Что нужно сделать?" required>
+      <label class="field-row">
+        userId
+        <input type="number" id="edit-user-id" placeholder="userId" min="1" required>
+      </label>
+      <label class="done-row">
+        <input type="checkbox" id="edit-done"> Выполнено
+      </label>
+      <div class="modal-actions">
+        <button type="button" id="edit-cancel" class="secondary">Отмена</button>
+        <button type="submit">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="delete-modal">
+    <h2>Удалить задачу?</h2>
+    <p id="delete-text"></p>
+    <div class="modal-actions">
+      <button type="button" id="delete-cancel" class="secondary">Отмена</button>
+      <button type="button" id="delete-confirm" class="danger">Удалить</button>
+    </div>
+  </dialog>
 
   <script src="scrip.js"></script>
 </body>
