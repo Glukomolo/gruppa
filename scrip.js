@@ -1,10 +1,14 @@
 const API = "https://dummyjson.com/todos";
 
 const todoList = document.getElementById("list");
+const countEl = document.getElementById("count");
+
+const addModal = document.getElementById("add-modal");
+const openAddBtn = document.getElementById("open-add");
 const todoForm = document.getElementById("add-form");
 const todoInput = document.getElementById("new-todo");
 const userIdInput = document.getElementById("user-id");
-const countEl = document.getElementById("count");
+const addCancel = document.getElementById("add-cancel");
 
 const modal = document.getElementById("task-modal");
 const editForm = document.getElementById("edit-form");
@@ -207,6 +211,19 @@ function renderTodoItem(item, toTop = false) {
     }
 }
 
+openAddBtn.addEventListener("click", () => {
+    showStatus("");
+    addModal.showModal();
+    todoInput.focus();
+});
+
+addCancel.addEventListener("click", () => addModal.close());
+
+addModal.addEventListener("click", (e) => {
+    if (e.target === addModal) addModal.close();
+});
+
+
 todoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -236,6 +253,7 @@ todoForm.addEventListener("submit", async (e) => {
         updateCount();
 
         todoInput.value = "";
+        addModal.close();
         showStatus("Задача успешно добавлена!");
         clearStatusLater();
 

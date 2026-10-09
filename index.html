@@ -9,16 +9,28 @@
 <body>
   <h1>Тудушник</h1>
 
-  <form id="add-form">
-    <input type="text" id="new-todo" placeholder="Что нужно сделать?" required>
-    <input type="number" id="user-id" placeholder="userId" min="1" value="1">
-    <button type="submit">Добавить</button>
-  </form>
+  <button type="button" id="open-add">Добавить задачу</button>
 
   <div class="status" id="status"></div>
 
   <h2 id="list-title">Список задач (<span id="count">0</span>)</h2>
   <ul id="list"></ul>
+
+  <dialog id="add-modal">
+    <form id="add-form">
+      <h2>Новая задача</h2>
+      <input type="text" id="new-todo" placeholder="Что нужно сделать?" required>
+      <label class="field-row">
+        userId
+        <input type="number" id="user-id" placeholder="userId" min="1" value="1" required>
+      </label>
+      <div class="status" id="add-status"></div>
+      <div class="modal-actions">
+        <button type="button" id="add-cancel" class="secondary">Отмена</button>
+        <button type="submit">Добавить</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog id="task-modal">
     <form id="edit-form">

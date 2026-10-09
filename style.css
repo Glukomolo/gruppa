@@ -14,12 +14,6 @@ h1 {
   display: none !important;
 }
 
-form {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
 input[type="text"],
 input[type="number"] {
   padding: 8px 10px;
@@ -86,6 +80,7 @@ li.done span {
   color: #c53030;
 }
 
+#add-modal,
 #task-modal,
 #delete-modal {
   border: 0;
@@ -95,6 +90,7 @@ li.done span {
   width: min(420px, 90vw);
 }
 
+#add-modal::backdrop,
 #task-modal::backdrop,
 #delete-modal::backdrop {
   background: rgba(0, 0, 0, .45);
@@ -110,19 +106,27 @@ li.done span {
   overflow-wrap: anywhere;
 }
 
+#add-form,
 #edit-form {
+  display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 0;
 }
 
+#add-form h2,
 #edit-form h2 {
   margin: 0;
 }
 
+#add-form input[type="text"],
+#add-form input[type="number"],
 #edit-form input[type="text"],
 #edit-form input[type="number"] {
   flex: none;
+}
+
+#add-form .status {
+  margin: 0;
 }
 
 .field-row {
