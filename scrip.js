@@ -5,7 +5,7 @@ const todoList = document.getElementById("list");
 const todoForm = document.getElementById("add-form");
 const todoInput = document.getElementById("new-todo");
 const statusDiv = document.getElementById("status");
-
+const userIdInput = document.getElementById("user-id");
 
 
 function showStatus(text, isError = false) {
@@ -113,12 +113,12 @@ todoForm.addEventListener("submit", async (e) => {
     const taskText = todoInput.value.trim();
     if (!taskText) return;
 
+    const userId = Number(userIdInput.value) || 1;
+
     statusDiv.textContent = "Добавление...";
     statusDiv.className = "";
 
-    function getRandomUserId() {
-    return Math.floor(Math.random() * 208) + 1; // в dummyjson пользователи 1–208
-}
+   
 
     try {
         const response = await fetch("https://dummyjson.com/todos/add", {
@@ -129,15 +129,15 @@ todoForm.addEventListener("submit", async (e) => {
             body: JSON.stringify({
                 todo: taskText,
                 completed: false,
-                userId: getRandomUserId()
+                userId: userId
             })
         });
 
    
 
 const newTodo = await response.json();
-newTodo.local = true;          // сервер её не сохранил, PUT/DELETE пропускаем
-renderTodoItem(newTodo, true); // true: добавить в начало списка
+newTodo.local = true;          
+renderTodoItem(newTodo, true); 
 
 
         todoInput.value = "";
