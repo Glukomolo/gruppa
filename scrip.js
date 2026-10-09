@@ -1,6 +1,6 @@
 
 const API = "https://dummyjson.com/todos";
-// Находим элементы строго по ID из твоего HTML
+
 const todoList = document.getElementById("list");
 const todoForm = document.getElementById("add-form");
 const todoInput = document.getElementById("new-todo");
@@ -14,7 +14,7 @@ function showStatus(text, isError = false) {
 }
 
 async function apiRequest(item, method, body) {
-    if (item.local) return item; // созданные через POST на сервере не существуют
+    if (item.local) return item; 
 
     const options = { method };
     if (body) {
@@ -29,7 +29,7 @@ async function apiRequest(item, method, body) {
     return response.json();
 }
 
-// 1. Функция получения задач (GET)
+
 async function loadTodos() {
     statusDiv.textContent = "Загрузка задач...";
     statusDiv.className = "";
@@ -38,10 +38,10 @@ async function loadTodos() {
         const response = await fetch(API);
         const data = await response.json();
 
-        todoList.innerHTML = ""; // Очищаем список
+        todoList.innerHTML = ""; // 
         statusDiv.textContent = "";
 
-        // Выводим первые 10 задач для примера
+        
         data.todos.slice(0, 10).forEach(item => {
             renderTodoItem(item);
         });
@@ -55,7 +55,7 @@ async function loadTodos() {
 
 
 
-// PUT: отметить выполненной / невыполненной
+
 async function toggleTodo(item, li, checkbox) {
     const newValue = checkbox.checked;
     try {
@@ -64,12 +64,11 @@ async function toggleTodo(item, li, checkbox) {
         li.classList.toggle("done", newValue);
     } catch (error) {
         console.error(error);
-        checkbox.checked = !newValue; // откатываем галочку
+        checkbox.checked = !newValue; 
         showStatus("Не удалось обновить задачу", true);
     }
 }
 
-// DELETE
 async function deleteTodo(item, li) {
     try {
         await apiRequest(item, "DELETE");
@@ -81,12 +80,12 @@ async function deleteTodo(item, li) {
         showStatus("Не удалось удалить задачу", true);
     }
 }
-// Вспомогательная функция для отрисовки одной задачи (без кнопки удаления)
+
 function renderTodoItem(item, toTop = false) {
     const li = document.createElement("li");
     if (item.completed) li.classList.add("done");
 
-    // чекбокс: отмечен, если задача выполнена
+    
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = item.completed;
@@ -107,9 +106,9 @@ function renderTodoItem(item, toTop = false) {
         todoList.appendChild(li);
     }
 }
-// 2. Функция отправки новой задачи через форму (POST)
+
 todoForm.addEventListener("submit", async (e) => {
-    e.preventDefault(); // Останавливаем перезагрузку страницы
+    e.preventDefault(); 
 
     const taskText = todoInput.value.trim();
     if (!taskText) return;
@@ -132,10 +131,9 @@ todoForm.addEventListener("submit", async (e) => {
 
         const newTodo = await response.json();
 
-        // Добавляем созданную задачу в начало списка
         renderTodoItem(newTodo);
 
-        // Очищаем инпут и выводим статус
+     
         todoInput.value = "";
         statusDiv.textContent = "Задача успешно добавлена!";
         
@@ -148,5 +146,5 @@ todoForm.addEventListener("submit", async (e) => {
     }
 });
 
-// Запускаем загрузку при открытии страницы
+
 loadTodos();
