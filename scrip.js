@@ -129,11 +129,13 @@ todoForm.addEventListener("submit", async (e) => {
             })
         });
 
-        const newTodo = await response.json();
+   
 
-        renderTodoItem(newTodo);
+const newTodo = await response.json();
+newTodo.local = true;          // сервер её не сохранил, PUT/DELETE пропускаем
+renderTodoItem(newTodo, true); // true: добавить в начало списка
 
-     
+
         todoInput.value = "";
         statusDiv.textContent = "Задача успешно добавлена!";
         
