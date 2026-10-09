@@ -116,6 +116,10 @@ todoForm.addEventListener("submit", async (e) => {
     statusDiv.textContent = "Добавление...";
     statusDiv.className = "";
 
+    function getRandomUserId() {
+    return Math.floor(Math.random() * 208) + 1; // в dummyjson пользователи 1–208
+}
+
     try {
         const response = await fetch("https://dummyjson.com/todos/add", {
             method: "POST",
@@ -125,7 +129,7 @@ todoForm.addEventListener("submit", async (e) => {
             body: JSON.stringify({
                 todo: taskText,
                 completed: false,
-                userId: 5
+                userId: getRandomUserId()
             })
         });
 
