@@ -48,6 +48,7 @@
         <button type="submit">Сохранить</button>
       </div>
     </form>
+    <p>Пользователь: <button type="button" id="task-user"></button></p>
   </dialog>
 
   <dialog id="delete-modal">
@@ -58,6 +59,26 @@
       <button type="button" id="delete-confirm" class="danger">Удалить</button>
     </div>
   </dialog>
+
+ <dialog id="user-modal" class="user-card">
+    <div class="user-card-header">
+        <h2>Профиль пользователя</h2>
+        <button type="button" id="user-close" aria-label="Закрыть">×</button>
+    </div>
+
+    <img id="user-photo" class="user-photo" alt="Аватар пользователя">
+    <h3 id="user-name"></h3>
+    <p id="user-id-label" class="user-id-label"></p>
+
+    <dl class="user-details">
+        <div><dt>Возраст</dt><dd id="user-age"></dd></div>
+        <div><dt>Email</dt><dd id="user-email"></dd></div>
+        <div><dt>Телефон</dt><dd id="user-phone"></dd></div>
+        <div><dt>Город</dt><dd id="user-city"></dd></div>
+        <div><dt>Компания</dt><dd id="user-company"></dd></div>
+        <div><dt>Должность</dt><dd id="user-job"></dd></div>
+    </dl>
+</dialog>
 
   <script src="scrip.js"></script>
 </body>

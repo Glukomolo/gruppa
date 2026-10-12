@@ -106,15 +106,54 @@ async function deleteTodo(item, li) {
     }
 }
 
+async function loadUser(userId) {
+    const response = await fetch(
+        `https://dummyjson.com/users/${userId}`
+    );
 
-function openEditModal(ctx) {
+    if (!response.ok) {
+        throw new Error("Не удалось загрузить пользователя");
+    }
+
+    return response.json();
+}
+
+async function openEditModal(ctx, canEdit = false) {
     editing = ctx;
+    editText.readOnly = !canEdit;
+editUserId.readOnly = !canEdit;
+editDone.disabled = !canEdit;
+editUserId.closest(".field-row").hidden = !canEdit;
+editDone.closest(".done-row").hidden = !canEdit;
+
+editForm.querySelector('button[type="submit"]').hidden = !canEdit;
+editForm.querySelector("h2").textContent =
+    canEdit ? "Редактирование задачи" : "Просмотр задачи";
+
+editCancel.textContent = canEdit ? "Отмена" : "Закрыть";
     editText.value = ctx.item.todo;
     editUserId.value = ctx.item.userId;
     editDone.checked = ctx.item.completed;
     modal.showModal();
     editText.focus();
+
+    const userButton = document.getElementById("task-user");
+    userButton.textContent = "Загрузка...";
+    userButton.disabled = true;
+    
+
+    try {
+        const user = await loadUser(ctx.item.userId);
+
+        userButton.textContent = `${user.firstName} ${user.lastName}`;
+        userButton.disabled = false;
+        userButton.onclick = () => openUserModal(user);
+    } catch (error) {
+        userButton.textContent = "Не удалось загрузить пользователя";
+        console.error(error);
+    }
 }
+
 
 editCancel.addEventListener("click", () => modal.close());
 
@@ -198,8 +237,8 @@ function renderTodoItem(item, toTop = false) {
     delBtn.textContent = "Удалить";
 
     const ctx = { item, li, checkbox, span };
-    span.addEventListener("click", () => openEditModal(ctx));
-    editBtn.addEventListener("click", () => openEditModal(ctx));
+    span.addEventListener("click", () => openEditModal(ctx, false));
+    editBtn.addEventListener("click", () => openEditModal(ctx, true));
     delBtn.addEventListener("click", () => openDeleteModal({ item, li }));
 
     li.append(checkbox, span, editBtn, delBtn);
@@ -263,5 +302,32 @@ todoForm.addEventListener("submit", async (e) => {
     }
 });
 
+const userModal = document.getElementById("user-modal");
+const userName = document.getElementById("user-name");
+const userEmail = document.getElementById("user-email");
+const userAge = document.getElementById("user-age");
+const userClose = document.getElementById("user-close");
 
+function openUserModal(user) {
+    userName.textContent = `${user.firstName} ${user.lastName}`;
+    userEmail.textContent = user.email || "Не указано";
+    userAge.textContent = user.age ?? "Не указано";
+
+    document.getElementById("user-photo").src = user.image;
+    document.getElementById("user-id-label").textContent =
+        `ID пользователя: ${user.id}`;
+    document.getElementById("user-phone").textContent =
+        user.phone || "Не указано";
+    document.getElementById("user-city").textContent =
+        user.address?.city || "Не указано";
+    document.getElementById("user-company").textContent =
+        user.company?.name || "Не указано";
+    document.getElementById("user-job").textContent =
+        user.company?.title || "Не указано";
+
+    userModal.showModal();
+}
+userClose.addEventListener("click", () => {
+    userModal.close();
+});
 loadTodos();
