@@ -2,6 +2,7 @@ const API = "https://dummyjson.com/todos";
 
 const todoList = document.getElementById("list");
 const countEl = document.getElementById("count");
+const todoFilter = document.getElementById("todo-filter");
 
 const addModal = document.getElementById("add-modal");
 const openAddBtn = document.getElementById("open-add");
@@ -45,6 +46,7 @@ function syncMainItem(item) {
     ctx.span.textContent = item.todo;
     ctx.checkbox.checked = item.completed;
     ctx.li.classList.toggle("done", item.completed);
+    updateMainList();
 }
 
 function removeFromMain(item) {
@@ -52,7 +54,7 @@ function removeFromMain(item) {
     if (!ctx) return;
     ctx.li.remove();
     registry.delete(item.id);
-    updateCount();
+    updateMainList();
 }
 
 
@@ -67,9 +69,22 @@ function clearStatusLater() {
     setTimeout(() => showStatus(""), 2000);
 }
 
-function updateCount() {
-    countEl.textContent = todoList.children.length;
+function updateMainList() {
+    const filter = todoFilter.value;
+    let visibleCount = 0;
+
+    registry.forEach(({ item, li }) => {
+        const visible = filter === "all"
+            || (filter === "done" && item.completed)
+            || (filter === "active" && !item.completed);
+        li.hidden = !visible;
+        if (visible) visibleCount++;
+    });
+
+    countEl.textContent = visibleCount;
 }
+
+todoFilter.addEventListener("change", updateMainList);
 
 async function apiRequest(item, method, body) {
     if (item.local) return item;
@@ -102,7 +117,7 @@ async function loadTodos() {
         data.todos.slice(0, 10).forEach(item => {
             renderTodoItem(remember(item));
         });
-        updateCount();
+        updateMainList();
 
     } catch (error) {
         console.error("Ошибка:", error);
@@ -117,6 +132,7 @@ async function toggleTodo(item, li, checkbox) {
         await apiRequest(item, "PUT", { completed: newValue });
         item.completed = newValue;
         li.classList.toggle("done", newValue);
+        updateMainList();
     } catch (error) {
         console.error(error);
         checkbox.checked = !newValue;
@@ -130,7 +146,7 @@ async function deleteTodo(item, li) {
         deletedIds.add(item.id);
         registry.delete(item.id);
         li.remove();
-        updateCount();
+        updateMainList();
         showStatus("Задача удалена");
         clearStatusLater();
     } catch (error) {
@@ -210,6 +226,7 @@ editForm.addEventListener("submit", async (e) => {
         span.textContent = item.todo;
         checkbox.checked = item.completed;
         li.classList.toggle("done", item.completed);
+        updateMainList();
 
         modal.close();
         showStatus("Задача обновлена");
@@ -325,7 +342,7 @@ todoForm.addEventListener("submit", async (e) => {
         newTodo.id = `local-${++localCounter}`;
         newTodo.userId = userId;
         renderTodoItem(remember(newTodo), true);
-        updateCount();
+        updateMainList();
 
         todoInput.value = "";
         addModal.close();
@@ -583,7 +600,7 @@ utForm.addEventListener("submit", async (e) => {
         newTodo.userId = userId;
 
         renderTodoItem(remember(newTodo), true);   // и в главный список
-        updateCount();
+        updateMainList();
 
         utInput.value = "";
         if (utFilter === "done") utFilter = "all"; // новая задача «в работе»

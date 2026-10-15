@@ -14,6 +14,14 @@
   <div class="status" id="status"></div>
 
   <h2 id="list-title">Список задач (<span id="count">0</span>)</h2>
+  <label class="todo-filter" for="todo-filter">
+    Показать задачи
+    <select id="todo-filter">
+      <option value="all">Все</option>
+      <option value="done">Выполненные</option>
+      <option value="active">Невыполненные</option>
+    </select>
+  </label>
   <ul id="list"></ul>
 
   <dialog id="add-modal">

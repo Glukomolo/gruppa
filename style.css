@@ -15,7 +15,8 @@ h1 {
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+#todo-filter {
   padding: 8px 10px;
   font-size: 16px;
   border: 1px solid #bbb;
@@ -37,13 +38,27 @@ button {
 }
 
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+#todo-filter:focus-visible {
   outline: 3px solid #90cdf4;
   outline-offset: 2px;
 }
 
 #list-title {
   margin: 16px 0 8px;
+}
+
+.todo-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+#todo-filter {
+  background: #fff;
+  color: inherit;
 }
 
 ul {
