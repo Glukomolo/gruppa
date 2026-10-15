@@ -154,16 +154,16 @@ async function loadUser(userId) {
 async function openEditModal(ctx, canEdit = false) {
     editing = ctx;
     editText.readOnly = !canEdit;
-editUserId.readOnly = !canEdit;
-editDone.disabled = !canEdit;
-editUserId.closest(".field-row").hidden = !canEdit;
-editDone.closest(".done-row").hidden = !canEdit;
+    editUserId.readOnly = !canEdit;
+    editDone.disabled = !canEdit;
+    editUserId.closest(".field-row").hidden = !canEdit;
+    editDone.closest(".done-row").hidden = !canEdit;
 
-editForm.querySelector('button[type="submit"]').hidden = !canEdit;
-editForm.querySelector("h2").textContent =
-    canEdit ? "Редактирование задачи" : "Просмотр задачи";
+    editForm.querySelector('button[type="submit"]').hidden = !canEdit;
+    editForm.querySelector("h2").textContent =
+        canEdit ? "Редактирование задачи" : "Просмотр задачи";
 
-editCancel.textContent = canEdit ? "Отмена" : "Закрыть";
+    editCancel.textContent = canEdit ? "Отмена" : "Закрыть";
     editText.value = ctx.item.todo;
     editUserId.value = ctx.item.userId;
     editDone.checked = ctx.item.completed;
@@ -173,7 +173,7 @@ editCancel.textContent = canEdit ? "Отмена" : "Закрыть";
     const userButton = document.getElementById("task-user");
     userButton.textContent = "Загрузка...";
     userButton.disabled = true;
-    
+
 
     try {
         const user = await loadUser(ctx.item.userId);
@@ -391,8 +391,8 @@ function renderUserTasks() {
 
     const shown = all.filter(item =>
         utFilter === "all" ? true :
-        utFilter === "done" ? item.completed :
-        !item.completed
+            utFilter === "done" ? item.completed :
+                !item.completed
     );
 
     utList.innerHTML = "";
@@ -402,8 +402,8 @@ function renderUserTasks() {
         empty.className = "ut-empty";
         empty.textContent =
             utFilter === "done" ? "Готовых задач пока нет" :
-            utFilter === "active" ? "Задач в работе нет" :
-            "У пользователя пока нет задач";
+                utFilter === "active" ? "Задач в работе нет" :
+                    "У пользователя пока нет задач";
         utList.append(empty);
         return;
     }
@@ -667,3 +667,20 @@ userModal.addEventListener("click", (e) => {
 });
 
 loadTodos();
+
+editUserId.addEventListener("input", async () => {
+    const userId = Number(editUserId.value);
+    if (!userId) return;
+
+    const userButton = document.getElementById("task-user");
+    userButton.textContent = "Загрузка...";
+
+    try {
+        const user = await loadUser(userId);
+        userButton.textContent = `${user.firstName} ${user.lastName}`;
+        userButton.disabled = false;
+        userButton.onclick = () => openUserModal(user);
+    } catch (error) {
+        userButton.textContent = "Не найден";
+    }
+});
