@@ -25,6 +25,36 @@ const deleteConfirm = document.getElementById("delete-confirm");
 let editing = null;
 let deleting = null;
 
+// Общее хранилище задач: id -> объект задачи (один и тот же объект
+// используется и в главном списке, и в окне задач пользователя)
+const itemsById = new Map();
+const registry = new Map();      // id -> ctx строки главного списка
+const deletedIds = new Set();    // удалённые задачи (API только имитирует удаление)
+const fetchedUsers = new Set();  // пользователи, чьи задачи уже загружены
+let localCounter = 0;
+
+function remember(item) {
+    if (!itemsById.has(item.id)) itemsById.set(item.id, item);
+    return itemsById.get(item.id);
+}
+
+// Обновить строку главного списка после изменения задачи
+function syncMainItem(item) {
+    const ctx = registry.get(item.id);
+    if (!ctx) return;
+    ctx.span.textContent = item.todo;
+    ctx.checkbox.checked = item.completed;
+    ctx.li.classList.toggle("done", item.completed);
+}
+
+function removeFromMain(item) {
+    const ctx = registry.get(item.id);
+    if (!ctx) return;
+    ctx.li.remove();
+    registry.delete(item.id);
+    updateCount();
+}
+
 
 function showStatus(text, isError = false) {
     document.querySelectorAll(".status").forEach(el => {
@@ -66,10 +96,11 @@ async function loadTodos() {
         const data = await response.json();
 
         todoList.innerHTML = "";
+        registry.clear();
         showStatus("");
 
         data.todos.slice(0, 10).forEach(item => {
-            renderTodoItem(item);
+            renderTodoItem(remember(item));
         });
         updateCount();
 
@@ -96,6 +127,8 @@ async function toggleTodo(item, li, checkbox) {
 async function deleteTodo(item, li) {
     try {
         await apiRequest(item, "DELETE");
+        deletedIds.add(item.id);
+        registry.delete(item.id);
         li.remove();
         updateCount();
         showStatus("Задача удалена");
@@ -237,6 +270,7 @@ function renderTodoItem(item, toTop = false) {
     delBtn.textContent = "Удалить";
 
     const ctx = { item, li, checkbox, span };
+    registry.set(item.id, ctx);
     span.addEventListener("click", () => openEditModal(ctx, false));
     editBtn.addEventListener("click", () => openEditModal(ctx, true));
     delBtn.addEventListener("click", () => openDeleteModal({ item, li }));
@@ -288,7 +322,9 @@ todoForm.addEventListener("submit", async (e) => {
 
         const newTodo = await response.json();
         newTodo.local = true;
-        renderTodoItem(newTodo, true);
+        newTodo.id = `local-${++localCounter}`;
+        newTodo.userId = userId;
+        renderTodoItem(remember(newTodo), true);
         updateCount();
 
         todoInput.value = "";
@@ -308,6 +344,288 @@ const userEmail = document.getElementById("user-email");
 const userAge = document.getElementById("user-age");
 const userClose = document.getElementById("user-close");
 
+// ---------- Окно задач пользователя ----------
+const utList = document.getElementById("ut-list");
+const utForm = document.getElementById("ut-add-form");
+const utInput = document.getElementById("ut-new");
+const utStatusEl = document.getElementById("ut-status");
+const utSubtitle = document.getElementById("ut-subtitle");
+const utFilterBtns = document.querySelectorAll(".ut-filter");
+
+let utUserId = null;
+let utFilter = "all";        // all | active | done
+let utEditingId = null;
+let utDeletingId = null;
+let utStatusTimer = null;
+
+function utSetStatus(text, isError = false, autoClear = false) {
+    clearTimeout(utStatusTimer);
+    utStatusEl.textContent = text;
+    utStatusEl.className = isError ? "ut-status error" : "ut-status";
+    if (autoClear) utStatusTimer = setTimeout(() => utSetStatus(""), 2000);
+}
+
+function getUserTodos(userId) {
+    const all = [...itemsById.values()].filter(
+        item => item.userId === userId && !deletedIds.has(item.id)
+    );
+    const local = all.filter(item => item.local).reverse();
+    const server = all.filter(item => !item.local).sort((a, b) => a.id - b.id);
+    return [...local, ...server];
+}
+
+function renderUserTasks() {
+    const all = getUserTodos(utUserId);
+    const counts = {
+        all: all.length,
+        active: all.filter(item => !item.completed).length,
+        done: all.filter(item => item.completed).length
+    };
+
+    utFilterBtns.forEach(btn => {
+        const isActive = btn.dataset.filter === utFilter;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-pressed", String(isActive));
+        btn.querySelector("span").textContent = counts[btn.dataset.filter];
+    });
+
+    const shown = all.filter(item =>
+        utFilter === "all" ? true :
+        utFilter === "done" ? item.completed :
+        !item.completed
+    );
+
+    utList.innerHTML = "";
+
+    if (!shown.length) {
+        const empty = document.createElement("li");
+        empty.className = "ut-empty";
+        empty.textContent =
+            utFilter === "done" ? "Готовых задач пока нет" :
+            utFilter === "active" ? "Задач в работе нет" :
+            "У пользователя пока нет задач";
+        utList.append(empty);
+        return;
+    }
+
+    shown.forEach(item => utList.append(buildUserTaskRow(item)));
+}
+
+function buildUserTaskRow(item) {
+    const li = document.createElement("li");
+
+    // Режим редактирования
+    if (utEditingId === item.id) {
+        const form = document.createElement("form");
+        form.className = "ut-edit-form";
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = item.todo;
+        input.required = true;
+
+        const saveBtn = document.createElement("button");
+        saveBtn.type = "submit";
+        saveBtn.className = "small";
+        saveBtn.textContent = "Сохранить";
+
+        const cancelBtn = document.createElement("button");
+        cancelBtn.type = "button";
+        cancelBtn.className = "small secondary";
+        cancelBtn.textContent = "Отмена";
+        cancelBtn.addEventListener("click", () => {
+            utEditingId = null;
+            renderUserTasks();
+        });
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            saveUserTask(item, input.value);
+        });
+
+        form.append(input, saveBtn, cancelBtn);
+        li.append(form);
+        setTimeout(() => { input.focus(); input.select(); }, 0);
+        return li;
+    }
+
+    // Подтверждение удаления
+    if (utDeletingId === item.id) {
+        const question = document.createElement("span");
+        question.textContent = `Удалить «${item.todo}»?`;
+
+        const actions = document.createElement("div");
+        actions.className = "ut-actions";
+
+        const yesBtn = document.createElement("button");
+        yesBtn.type = "button";
+        yesBtn.className = "small danger";
+        yesBtn.textContent = "Удалить";
+        yesBtn.addEventListener("click", () => deleteUserTask(item));
+
+        const noBtn = document.createElement("button");
+        noBtn.type = "button";
+        noBtn.className = "small secondary";
+        noBtn.textContent = "Отмена";
+        noBtn.addEventListener("click", () => {
+            utDeletingId = null;
+            renderUserTasks();
+        });
+
+        actions.append(yesBtn, noBtn);
+        li.append(question, actions);
+        return li;
+    }
+
+    // Обычный режим
+    li.classList.toggle("done", item.completed);
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = item.completed;
+    checkbox.addEventListener("change", () => toggleUserTask(item, checkbox.checked));
+
+    const span = document.createElement("span");
+    span.textContent = item.todo;
+
+    const actions = document.createElement("div");
+    actions.className = "ut-actions";
+
+    const editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.className = "small secondary";
+    editBtn.textContent = "Изменить";
+    editBtn.addEventListener("click", () => {
+        utDeletingId = null;
+        utEditingId = item.id;
+        renderUserTasks();
+    });
+
+    const delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "small";
+    delBtn.textContent = "Удалить";
+    delBtn.addEventListener("click", () => {
+        utEditingId = null;
+        utDeletingId = item.id;
+        renderUserTasks();
+    });
+
+    actions.append(editBtn, delBtn);
+    li.append(checkbox, span, actions);
+    return li;
+}
+
+async function toggleUserTask(item, checked) {
+    try {
+        await apiRequest(item, "PUT", { completed: checked });
+        item.completed = checked;
+        syncMainItem(item);
+        utSetStatus("");
+    } catch (error) {
+        console.error(error);
+        utSetStatus("Не удалось обновить задачу", true);
+    }
+    renderUserTasks();
+}
+
+async function saveUserTask(item, text) {
+    text = text.trim();
+    if (!text) return;
+
+    try {
+        await apiRequest(item, "PUT", { todo: text });
+        item.todo = text;
+        syncMainItem(item);
+        utEditingId = null;
+        utSetStatus("Задача обновлена", false, true);
+    } catch (error) {
+        console.error(error);
+        utSetStatus("Не удалось сохранить изменения", true);
+    }
+    renderUserTasks();
+}
+
+async function deleteUserTask(item) {
+    try {
+        await apiRequest(item, "DELETE");
+        deletedIds.add(item.id);
+        removeFromMain(item);
+        utDeletingId = null;
+        utSetStatus("Задача удалена", false, true);
+    } catch (error) {
+        console.error(error);
+        utSetStatus("Не удалось удалить задачу", true);
+    }
+    renderUserTasks();
+}
+
+utForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const text = utInput.value.trim();
+    if (!text) return;
+
+    const userId = utUserId;
+    utSetStatus("Добавление...");
+
+    try {
+        const response = await fetch("https://dummyjson.com/todos/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ todo: text, completed: false, userId })
+        });
+        if (!response.ok) throw new Error("Ошибка сервера: " + response.status);
+
+        const newTodo = await response.json();
+        newTodo.local = true;
+        newTodo.id = `local-${++localCounter}`;
+        newTodo.userId = userId;
+
+        renderTodoItem(remember(newTodo), true);   // и в главный список
+        updateCount();
+
+        utInput.value = "";
+        if (utFilter === "done") utFilter = "all"; // новая задача «в работе»
+        utSetStatus("Задача добавлена", false, true);
+        if (utUserId === userId) renderUserTasks();
+    } catch (error) {
+        console.error(error);
+        utSetStatus("Не удалось добавить задачу", true);
+    }
+});
+
+utFilterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        utFilter = btn.dataset.filter;
+        utEditingId = null;
+        utDeletingId = null;
+        renderUserTasks();
+    });
+});
+
+async function loadUserTasks(userId) {
+    if (fetchedUsers.has(userId)) return;
+
+    utSetStatus("Загрузка задач...");
+    try {
+        const response = await fetch(`${API}/user/${userId}`);
+        if (!response.ok) throw new Error("Ошибка сервера: " + response.status);
+
+        const data = await response.json();
+        data.todos.forEach(item => remember(item));
+        fetchedUsers.add(userId);
+
+        if (utUserId === userId) {
+            utSetStatus("");
+            renderUserTasks();
+        }
+    } catch (error) {
+        console.error(error);
+        if (utUserId === userId) utSetStatus("Не удалось загрузить задачи", true);
+    }
+}
+
 function openUserModal(user) {
     userName.textContent = `${user.firstName} ${user.lastName}`;
     userEmail.textContent = user.email || "Не указано";
@@ -325,9 +643,27 @@ function openUserModal(user) {
     document.getElementById("user-job").textContent =
         user.company?.title || "Не указано";
 
+    // Окно задач этого пользователя
+    utUserId = user.id;
+    utFilter = "all";
+    utEditingId = null;
+    utDeletingId = null;
+    utInput.value = "";
+    utSetStatus("");
+    utSubtitle.textContent = `${user.firstName} ${user.lastName}, ID ${user.id}`;
+    renderUserTasks();
+
     userModal.showModal();
+    loadUserTasks(user.id);
 }
-userClose.addEventListener("click", () => {
-    userModal.close();
+
+userClose.addEventListener("click", () => userModal.close());
+
+// Клик по тёмному фону (вне карточек) закрывает окно
+userModal.addEventListener("click", (e) => {
+    if (e.target === userModal || e.target.classList.contains("user-layout")) {
+        userModal.close();
+    }
 });
+
 loadTodos();

@@ -60,25 +60,50 @@
     </div>
   </dialog>
 
- <dialog id="user-modal" class="user-card">
-    <div class="user-card-header">
-        <h2>Профиль пользователя</h2>
-        <button type="button" id="user-close" aria-label="Закрыть">×</button>
+ <dialog id="user-modal" class="user-dialog">
+    <div class="user-layout">
+
+      <section class="user-tasks" aria-labelledby="ut-title">
+        <h2 id="ut-title">Задачи пользователя</h2>
+        <p id="ut-subtitle" class="ut-subtitle"></p>
+
+        <form id="ut-add-form" class="ut-add">
+          <input type="text" id="ut-new" placeholder="Новая задача" required>
+          <button type="submit">Добавить</button>
+        </form>
+
+        <div class="ut-filters" role="group" aria-label="Фильтр задач">
+          <button type="button" class="ut-filter active" data-filter="all" aria-pressed="true">Все <span>0</span></button>
+          <button type="button" class="ut-filter" data-filter="active" aria-pressed="false">В работе <span>0</span></button>
+          <button type="button" class="ut-filter" data-filter="done" aria-pressed="false">Готовые <span>0</span></button>
+        </div>
+
+        <div class="ut-status" id="ut-status"></div>
+        <ul id="ut-list"></ul>
+      </section>
+
+      <section class="user-card" aria-labelledby="user-card-title">
+        <div class="user-card-header">
+          <h2 id="user-card-title">Профиль пользователя</h2>
+          <button type="button" id="user-close" aria-label="Закрыть">×</button>
+        </div>
+
+        <img id="user-photo" class="user-photo" alt="Аватар пользователя">
+        <h3 id="user-name"></h3>
+        <p id="user-id-label" class="user-id-label"></p>
+
+        <dl class="user-details">
+          <div><dt>Возраст</dt><dd id="user-age"></dd></div>
+          <div><dt>Email</dt><dd id="user-email"></dd></div>
+          <div><dt>Телефон</dt><dd id="user-phone"></dd></div>
+          <div><dt>Город</dt><dd id="user-city"></dd></div>
+          <div><dt>Компания</dt><dd id="user-company"></dd></div>
+          <div><dt>Должность</dt><dd id="user-job"></dd></div>
+        </dl>
+      </section>
+
     </div>
-
-    <img id="user-photo" class="user-photo" alt="Аватар пользователя">
-    <h3 id="user-name"></h3>
-    <p id="user-id-label" class="user-id-label"></p>
-
-    <dl class="user-details">
-        <div><dt>Возраст</dt><dd id="user-age"></dd></div>
-        <div><dt>Email</dt><dd id="user-email"></dd></div>
-        <div><dt>Телефон</dt><dd id="user-phone"></dd></div>
-        <div><dt>Город</dt><dd id="user-city"></dd></div>
-        <div><dt>Компания</dt><dd id="user-company"></dd></div>
-        <div><dt>Должность</dt><dd id="user-job"></dd></div>
-    </dl>
-</dialog>
+  </dialog>
 
   <script src="scrip.js"></script>
 </body>
