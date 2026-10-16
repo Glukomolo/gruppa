@@ -616,6 +616,8 @@ function openUserModal(user) {
     userAge.textContent = user.age ?? "Не указано";
 
     document.getElementById("user-photo").src = user.image;
+    document.getElementById("user-username").textContent =
+        user.username ? `@${user.username}` : "";
     document.getElementById("user-id-label").textContent =
         `ID пользователя: ${user.id}`;
     document.getElementById("user-phone").textContent =
