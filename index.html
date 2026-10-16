@@ -51,6 +51,26 @@
     </div>
   </dialog>
 
+  <dialog id="edit-modal">
+    <form id="edit-form">
+      <h2>Изменить задачу</h2>
+      <input type="text" id="edit-text" required>
+      <label class="field-row">
+        userId
+        <input type="number" id="edit-user-id" placeholder="userId" min="1" required>
+      </label>
+      <label class="done-row">
+        <input type="checkbox" id="edit-done">
+        Выполнено
+      </label>
+      <div class="status" id="edit-status"></div>
+      <div class="modal-actions">
+        <button type="button" id="edit-cancel" class="secondary">Отмена</button>
+        <button type="submit">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
   <dialog id="delete-modal">
     <h2>Удалить задачу?</h2>
     <p id="delete-text"></p>

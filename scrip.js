@@ -222,6 +222,63 @@ deleteModal.addEventListener("close", () => { deleting = null; });
 
 
 
+// ---------- Окно редактирования задачи ----------
+const editModal = document.getElementById("edit-modal");
+const editForm = document.getElementById("edit-form");
+const editText = document.getElementById("edit-text");
+const editDone = document.getElementById("edit-done");
+const editUserId = document.getElementById("edit-user-id");
+const editCancel = document.getElementById("edit-cancel");
+
+function openEditModal(ctx) {
+    editing = ctx;
+    editText.value = ctx.item.todo;
+    editDone.checked = ctx.item.completed;
+    editUserId.value = ctx.item.userId;
+    showStatus("");
+    editModal.showModal();
+    editText.focus();
+    editText.select();
+}
+
+editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!editing) return;
+
+    const { item } = editing;
+    const text = editText.value.trim();
+    if (!text) return;
+
+    const userId = Number(editUserId.value);
+    if (!Number.isInteger(userId) || userId < 1) {
+        showStatus("Укажите корректный userId", true);
+        return;
+    }
+
+    showStatus("Сохранение...");
+    try {
+        await apiRequest(item, "PUT", { todo: text, completed: editDone.checked, userId });
+        item.todo = text;
+        item.completed = editDone.checked;
+        item.userId = userId;
+        syncMainItem(item);
+        editModal.close();
+        showStatus("Задача обновлена");
+        clearStatusLater();
+    } catch (error) {
+        console.error(error);
+        showStatus("Не удалось сохранить изменения", true);
+    }
+});
+
+editCancel.addEventListener("click", () => editModal.close());
+
+editModal.addEventListener("click", (e) => {
+    if (e.target === editModal) editModal.close();
+});
+
+editModal.addEventListener("close", () => { editing = null; });
+
 function renderTodoItem(item, toTop = false) {
     const li = document.createElement("li");
     if (item.completed) li.classList.add("done");
@@ -640,7 +697,3 @@ userModal.addEventListener("click", (e) => {
 });
 
 loadTodos();
-
-
-
-
