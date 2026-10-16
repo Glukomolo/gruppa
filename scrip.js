@@ -25,9 +25,9 @@ let deleting = null;
 
 
 const itemsById = new Map();
-const registry = new Map();      
-const deletedIds = new Set();    
-const fetchedUsers = new Set();  
+const registry = new Map();
+const deletedIds = new Set();
+const fetchedUsers = new Set();
 let localCounter = 0;
 
 function remember(item) {
@@ -42,6 +42,7 @@ function syncMainItem(item) {
     ctx.span.textContent = item.todo;
     ctx.checkbox.checked = item.completed;
     ctx.li.classList.toggle("done", item.completed);
+    ctx.refreshUser();
     updateMainList();
 }
 
@@ -78,18 +79,18 @@ function updateMainList() {
         } else if (sort === "desc") {
             return b.item.todo.localeCompare(a.item.todo);
         }
-        return 0; 
+        return 0;
     });
 
     entries.forEach(({ item, li }) => {
         const visible = filter === "all"
             || (filter === "done" && item.completed)
             || (filter === "active" && !item.completed);
-        
+
         li.hidden = !visible;
         if (visible) {
             visibleCount++;
-            todoList.appendChild(li); 
+            todoList.appendChild(li);
         }
     });
 
@@ -168,16 +169,20 @@ async function deleteTodo(item) {
     }
 }
 
-async function loadUser(userId) {
-    const response = await fetch(
-        `https://dummyjson.com/users/${userId}`
-    );
+const userCache = new Map();
 
-    if (!response.ok) {
-        throw new Error("Не удалось загрузить пользователя");
+function loadUser(userId) {
+    if (!userCache.has(userId)) {
+        const promise = fetch(`https://dummyjson.com/users/${userId}`).then(response => {
+            if (!response.ok) {
+                throw new Error("Не удалось загрузить пользователя");
+            }
+            return response.json();
+        });
+        promise.catch(() => userCache.delete(userId));
+        userCache.set(userId, promise);
     }
-
-    return response.json();
+    return userCache.get(userId);
 }
 
 
@@ -187,7 +192,7 @@ const modal = document.getElementById("task-modal");
 async function openTaskModal(ctx) {
     editing = ctx;
     taskInfoText.textContent = ctx.item.todo;
-    
+
     modal.showModal();
 
     const userButton = document.getElementById("task-user");
@@ -306,8 +311,29 @@ function renderTodoItem(item, toTop = false) {
     checkbox.checked = item.completed;
     checkbox.addEventListener("change", () => toggleTodo(item, li, checkbox));
 
+    // --- блок пользователя (аватар + имя) ---
+    const userBtn = document.createElement("button");
+    userBtn.type = "button";
+    userBtn.className = "todo-user";
+
+    const avatar = document.createElement("img");
+    avatar.className = "todo-avatar";
+    avatar.alt = "";
+
+    const userNameEl = document.createElement("span");
+    userNameEl.className = "todo-username";
+    userNameEl.textContent = "Загрузка...";
+
+    userBtn.append(avatar, userNameEl);
+
+    // --- текст задачи ---
     const span = document.createElement("span");
+    span.className = "todo-text";
     span.textContent = item.todo;
+
+    const body = document.createElement("div");
+    body.className = "todo-body";
+    body.append(userBtn, span);
 
     const editBtn = document.createElement("button");
     editBtn.textContent = "Изменить";
@@ -317,19 +343,37 @@ function renderTodoItem(item, toTop = false) {
     delBtn.textContent = "Удалить";
 
     const ctx = { item, li, checkbox, span };
+
+    // подгрузка данных пользователя (вызывается и после смены userId)
+    ctx.refreshUser = async () => {
+        const id = item.userId;
+        try {
+            const user = await loadUser(id);
+            if (item.userId !== id) return; // userId успели поменять
+            avatar.src = user.image;
+            userNameEl.textContent = `${user.firstName} ${user.lastName}`;
+            userBtn.onclick = () => openUserModal(user);
+        } catch (error) {
+            console.error(error);
+            userNameEl.textContent = `Пользователь #${id}`;
+        }
+    };
+
     registry.set(item.id, ctx);
-    
+
     editBtn.addEventListener("click", () => openEditModal(ctx, true));
     delBtn.addEventListener("click", () => openDeleteModal({ item, li }));
     span.addEventListener("click", () => openTaskModal(ctx));
 
-    li.append(checkbox, span, editBtn, delBtn);
+    li.append(checkbox, body, editBtn, delBtn);
 
     if (toTop) {
         todoList.prepend(li);
     } else {
         todoList.appendChild(li);
     }
+
+    ctx.refreshUser();
 }
 
 openAddBtn.addEventListener("click", () => {
@@ -401,7 +445,7 @@ const utSubtitle = document.getElementById("ut-subtitle");
 const utFilterBtns = document.querySelectorAll(".ut-filter");
 
 let utUserId = null;
-let utFilter = "all";        
+let utFilter = "all";
 let utStatusTimer = null;
 
 function utSetStatus(text, isError = false, autoClear = false) {
@@ -524,11 +568,11 @@ utForm.addEventListener("submit", async (e) => {
         newTodo.id = `local-${++localCounter}`;
         newTodo.userId = userId;
 
-        renderTodoItem(remember(newTodo), true);   
+        renderTodoItem(remember(newTodo), true);
         updateMainList();
 
         utInput.value = "";
-        if (utFilter === "done") utFilter = "all"; 
+        if (utFilter === "done") utFilter = "all";
         utSetStatus("Задача добавлена", false, true);
         if (utUserId === userId) renderUserTasks();
     } catch (error) {
