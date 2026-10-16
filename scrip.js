@@ -443,7 +443,9 @@ const utInput = document.getElementById("ut-new");
 const utStatusEl = document.getElementById("ut-status");
 const utSubtitle = document.getElementById("ut-subtitle");
 const utFilterBtns = document.querySelectorAll(".ut-filter");
+const utSort = document.getElementById("ut-sort");
 
+let utSortValue = "default";
 let utUserId = null;
 let utFilter = "all";
 let utStatusTimer = null;
@@ -479,12 +481,21 @@ function renderUserTasks() {
         btn.querySelector("span").textContent = counts[btn.dataset.filter];
     });
 
-    const shown = all.filter(item =>
+
+    let shown = all.filter(item =>
         utFilter === "all" ? true :
             utFilter === "done" ? item.completed :
                 !item.completed
     );
 
+    shown.sort((a, b) => {
+        if (utSortValue === "asc") {
+            return a.todo.localeCompare(b.todo);
+        } else if (utSortValue === "desc") {
+            return b.todo.localeCompare(a.todo);
+        }
+        return 0; // По умолчанию
+    });
     utList.innerHTML = "";
 
     if (!shown.length) {
@@ -587,6 +598,12 @@ utFilterBtns.forEach(btn => {
         renderUserTasks();
     });
 });
+if (utSort) {
+    utSort.addEventListener("change", () => {
+        utSortValue = utSort.value;
+        renderUserTasks();
+    });
+}
 
 async function loadUserTasks(userId) {
     if (fetchedUsers.has(userId)) return;
@@ -611,6 +628,8 @@ async function loadUserTasks(userId) {
 }
 
 function openUserModal(user) {
+    utSortValue = "default";
+    if (utSort) utSort.value = "default";
     userName.textContent = `${user.firstName} ${user.lastName}`;
     userEmail.textContent = user.email || "Не указано";
     userAge.textContent = user.age ?? "Не указано";
