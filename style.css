@@ -55,6 +55,14 @@ input:focus-visible,
   gap: 8px;
   margin-bottom: 12px;
 }
+input[type="text"],
+input[type="number"],
+#todo-filter {
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
 
 #todo-filter {
   background: #fff;

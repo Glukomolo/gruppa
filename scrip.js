@@ -3,6 +3,7 @@ const API = "https://dummyjson.com/todos";
 const todoList = document.getElementById("list");
 const countEl = document.getElementById("count");
 const todoFilter = document.getElementById("todo-filter");
+const todoSort = document.getElementById("todo-sort");
 
 const addModal = document.getElementById("add-modal");
 const openAddBtn = document.getElementById("open-add");
@@ -66,19 +67,37 @@ function clearStatusLater() {
 
 function updateMainList() {
     const filter = todoFilter.value;
+    const sort = todoSort.value;
     let visibleCount = 0;
 
-    registry.forEach(({ item, li }) => {
+    const entries = [...registry.values()];
+
+    entries.sort((a, b) => {
+        if (sort === "asc") {
+            return a.item.todo.localeCompare(b.item.todo);
+        } else if (sort === "desc") {
+            return b.item.todo.localeCompare(a.item.todo);
+        }
+        return 0; 
+    });
+
+    entries.forEach(({ item, li }) => {
         const visible = filter === "all"
             || (filter === "done" && item.completed)
             || (filter === "active" && !item.completed);
+        
         li.hidden = !visible;
-        if (visible) visibleCount++;
+        if (visible) {
+            visibleCount++;
+            todoList.appendChild(li); 
+        }
     });
 
     countEl.textContent = visibleCount;
 }
 
+
+todoSort.addEventListener("change", updateMainList);
 todoFilter.addEventListener("change", updateMainList);
 
 async function apiRequest(item, method, body) {
