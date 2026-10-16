@@ -154,13 +154,12 @@ async function toggleTodo(item, li, checkbox) {
     }
 }
 
-async function deleteTodo(item, li) {
+async function deleteTodo(item) {
     try {
         await apiRequest(item, "DELETE");
         deletedIds.add(item.id);
-        registry.delete(item.id);
-        li.remove();
-        updateMainList();
+        removeFromMain(item);
+        if (userModal.open) renderUserTasks();
         showStatus("Задача удалена");
         clearStatusLater();
     } catch (error) {
@@ -225,9 +224,9 @@ function openDeleteModal(ctx) {
 
 deleteConfirm.addEventListener("click", () => {
     if (!deleting) return;
-    const { item, li } = deleting;
+    const { item } = deleting;
     deleteModal.close();
-    deleteTodo(item, li);
+    deleteTodo(item);
 });
 
 deleteCancel.addEventListener("click", () => deleteModal.close());
@@ -280,6 +279,7 @@ editForm.addEventListener("submit", async (e) => {
         item.completed = editDone.checked;
         item.userId = userId;
         syncMainItem(item);
+        if (userModal.open) renderUserTasks();
         editModal.close();
         showStatus("Задача обновлена");
         clearStatusLater();
@@ -402,8 +402,6 @@ const utFilterBtns = document.querySelectorAll(".ut-filter");
 
 let utUserId = null;
 let utFilter = "all";        
-let utEditingId = null;
-let utDeletingId = null;
 let utStatusTimer = null;
 
 function utSetStatus(text, isError = false, autoClear = false) {
@@ -462,67 +460,6 @@ function renderUserTasks() {
 function buildUserTaskRow(item) {
     const li = document.createElement("li");
 
-    if (utEditingId === item.id) {
-        const form = document.createElement("form");
-        form.className = "ut-edit-form";
-
-        const input = document.createElement("input");
-        input.type = "text";
-        input.value = item.todo;
-        input.required = true;
-
-        const saveBtn = document.createElement("button");
-        saveBtn.type = "submit";
-        saveBtn.className = "small";
-        saveBtn.textContent = "Сохранить";
-
-        const cancelBtn = document.createElement("button");
-        cancelBtn.type = "button";
-        cancelBtn.className = "small secondary";
-        cancelBtn.textContent = "Отмена";
-        cancelBtn.addEventListener("click", () => {
-            utEditingId = null;
-            renderUserTasks();
-        });
-
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            saveUserTask(item, input.value);
-        });
-
-        form.append(input, saveBtn, cancelBtn);
-        li.append(form);
-        setTimeout(() => { input.focus(); input.select(); }, 0);
-        return li;
-    }
-
-    if (utDeletingId === item.id) {
-        const question = document.createElement("span");
-        question.textContent = `Удалить «${item.todo}»?`;
-
-        const actions = document.createElement("div");
-        actions.className = "ut-actions";
-
-        const yesBtn = document.createElement("button");
-        yesBtn.type = "button";
-        yesBtn.className = "small danger";
-        yesBtn.textContent = "Удалить";
-        yesBtn.addEventListener("click", () => deleteUserTask(item));
-
-        const noBtn = document.createElement("button");
-        noBtn.type = "button";
-        noBtn.className = "small secondary";
-        noBtn.textContent = "Отмена";
-        noBtn.addEventListener("click", () => {
-            utDeletingId = null;
-            renderUserTasks();
-        });
-
-        actions.append(yesBtn, noBtn);
-        li.append(question, actions);
-        return li;
-    }
-
     li.classList.toggle("done", item.completed);
 
     const checkbox = document.createElement("input");
@@ -538,23 +475,14 @@ function buildUserTaskRow(item) {
 
     const editBtn = document.createElement("button");
     editBtn.type = "button";
-    editBtn.className = "small secondary";
+    editBtn.className = "secondary";
     editBtn.textContent = "Изменить";
-    editBtn.addEventListener("click", () => {
-        utDeletingId = null;
-        utEditingId = item.id;
-        renderUserTasks();
-    });
+    editBtn.addEventListener("click", () => openEditModal({ item }));
 
     const delBtn = document.createElement("button");
     delBtn.type = "button";
-    delBtn.className = "small";
     delBtn.textContent = "Удалить";
-    delBtn.addEventListener("click", () => {
-        utEditingId = null;
-        utDeletingId = item.id;
-        renderUserTasks();
-    });
+    delBtn.addEventListener("click", () => openDeleteModal({ item }));
 
     actions.append(editBtn, delBtn);
     li.append(checkbox, span, actions);
@@ -570,37 +498,6 @@ async function toggleUserTask(item, checked) {
     } catch (error) {
         console.error(error);
         utSetStatus("Не удалось обновить задачу", true);
-    }
-    renderUserTasks();
-}
-
-async function saveUserTask(item, text) {
-    text = text.trim();
-    if (!text) return;
-
-    try {
-        await apiRequest(item, "PUT", { todo: text });
-        item.todo = text;
-        syncMainItem(item);
-        utEditingId = null;
-        utSetStatus("Задача обновлена", false, true);
-    } catch (error) {
-        console.error(error);
-        utSetStatus("Не удалось сохранить изменения", true);
-    }
-    renderUserTasks();
-}
-
-async function deleteUserTask(item) {
-    try {
-        await apiRequest(item, "DELETE");
-        deletedIds.add(item.id);
-        removeFromMain(item);
-        utDeletingId = null;
-        utSetStatus("Задача удалена", false, true);
-    } catch (error) {
-        console.error(error);
-        utSetStatus("Не удалось удалить задачу", true);
     }
     renderUserTasks();
 }
@@ -643,8 +540,6 @@ utForm.addEventListener("submit", async (e) => {
 utFilterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         utFilter = btn.dataset.filter;
-        utEditingId = null;
-        utDeletingId = null;
         renderUserTasks();
     });
 });
@@ -690,8 +585,6 @@ function openUserModal(user) {
 
     utUserId = user.id;
     utFilter = "all";
-    utEditingId = null;
-    utDeletingId = null;
     utInput.value = "";
     utSetStatus("");
     utSubtitle.textContent = `${user.firstName} ${user.lastName}, ID ${user.id}`;
