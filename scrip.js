@@ -11,12 +11,8 @@ const todoInput = document.getElementById("new-todo");
 const userIdInput = document.getElementById("user-id");
 const addCancel = document.getElementById("add-cancel");
 
-const modal = document.getElementById("task-modal");
-const editForm = document.getElementById("edit-form");
-const editText = document.getElementById("edit-text");
-const editUserId = document.getElementById("edit-user-id");
-const editDone = document.getElementById("edit-done");
-const editCancel = document.getElementById("edit-cancel");
+const taskInfoText = document.getElementById("task-info-text");
+const taskCloseX = document.getElementById("task-close-x");
 
 const deleteModal = document.getElementById("delete-modal");
 const deleteText = document.getElementById("delete-text");
@@ -167,33 +163,22 @@ async function loadUser(userId) {
     return response.json();
 }
 
-async function openEditModal(ctx, canEdit = false) {
+// ---------- Окно просмотра задачи (информационное) ----------
+const modal = document.getElementById("task-modal");
+
+
+async function openTaskModal(ctx) {
     editing = ctx;
-    editText.readOnly = !canEdit;
-    editUserId.readOnly = !canEdit;
-    editDone.disabled = !canEdit;
-    editUserId.closest(".field-row").hidden = !canEdit;
-    editDone.closest(".done-row").hidden = !canEdit;
-
-    editForm.querySelector('button[type="submit"]').hidden = !canEdit;
-    editForm.querySelector("h2").textContent =
-        canEdit ? "Редактирование задачи" : "Просмотр задачи";
-
-    editCancel.textContent = canEdit ? "Отмена" : "Закрыть";
-    editText.value = ctx.item.todo;
-    editUserId.value = ctx.item.userId;
-    editDone.checked = ctx.item.completed;
+    taskInfoText.textContent = ctx.item.todo;
+    
     modal.showModal();
-    editText.focus();
 
     const userButton = document.getElementById("task-user");
     userButton.textContent = "Загрузка...";
     userButton.disabled = true;
 
-
     try {
         const user = await loadUser(ctx.item.userId);
-
         userButton.textContent = `${user.firstName} ${user.lastName}`;
         userButton.disabled = false;
         userButton.onclick = () => openUserModal(user);
@@ -203,40 +188,9 @@ async function openEditModal(ctx, canEdit = false) {
     }
 }
 
-
-editCancel.addEventListener("click", () => modal.close());
-
-editForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!editing) return;
-
-    const { item, li, checkbox, span } = editing;
-    const text = editText.value.trim();
-    if (!text) return;
-
-    const body = {
-        todo: text,
-        completed: editDone.checked,
-        userId: Number(editUserId.value) || item.userId
-    };
-
-    try {
-        await apiRequest(item, "PUT", body);
-        Object.assign(item, body);
-        span.textContent = item.todo;
-        checkbox.checked = item.completed;
-        li.classList.toggle("done", item.completed);
-        updateMainList();
-
-        modal.close();
-        showStatus("Задача обновлена");
-        clearStatusLater();
-    } catch (error) {
-        console.error(error);
-        showStatus("Не удалось сохранить изменения", true);
-        modal.close();
-    }
-});
+if (taskCloseX) {
+    taskCloseX.addEventListener("click", () => modal.close());
+}
 
 modal.addEventListener("click", (e) => {
     if (e.target === modal) modal.close();
@@ -267,6 +221,7 @@ deleteModal.addEventListener("click", (e) => {
 deleteModal.addEventListener("close", () => { deleting = null; });
 
 
+
 function renderTodoItem(item, toTop = false) {
     const li = document.createElement("li");
     if (item.completed) li.classList.add("done");
@@ -288,9 +243,10 @@ function renderTodoItem(item, toTop = false) {
 
     const ctx = { item, li, checkbox, span };
     registry.set(item.id, ctx);
-    span.addEventListener("click", () => openEditModal(ctx, false));
+    
     editBtn.addEventListener("click", () => openEditModal(ctx, true));
     delBtn.addEventListener("click", () => openDeleteModal({ item, li }));
+    span.addEventListener("click", () => openTaskModal(ctx));
 
     li.append(checkbox, span, editBtn, delBtn);
 
@@ -685,19 +641,6 @@ userModal.addEventListener("click", (e) => {
 
 loadTodos();
 
-editUserId.addEventListener("input", async () => {
-    const userId = Number(editUserId.value);
-    if (!userId) return;
 
-    const userButton = document.getElementById("task-user");
-    userButton.textContent = "Загрузка...";
 
-    try {
-        const user = await loadUser(userId);
-        userButton.textContent = `${user.firstName} ${user.lastName}`;
-        userButton.disabled = false;
-        userButton.onclick = () => openUserModal(user);
-    } catch (error) {
-        userButton.textContent = "Не найден";
-    }
-});
+

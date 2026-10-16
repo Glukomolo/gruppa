@@ -422,3 +422,59 @@ button.small {
     font-weight: 500;
     overflow-wrap: anywhere;
 }
+#task-modal {
+  border: 0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .25);
+  width: min(420px, 90vw);
+}
+
+#task-modal::backdrop {
+  background: rgba(0, 0, 0, .45);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.modal-close-btn {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  background: #eef2f7;
+  color: #475569;
+  font-size: 22px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-close-btn:hover {
+  background: #dce4ef;
+}
+
+.task-info-text {
+  margin: 0 0 16px;
+  color: #555;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+}
+
+.task-user-row {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+}

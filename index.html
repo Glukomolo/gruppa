@@ -40,23 +40,15 @@
     </form>
   </dialog>
 
-  <dialog id="task-modal">
-    <form id="edit-form">
-      <h2>Редактирование задачи</h2>
-      <input type="text" id="edit-text" placeholder="Что нужно сделать?" required>
-      <label class="field-row">
-        userId
-        <input type="number" id="edit-user-id" placeholder="userId" min="1" required>
-      </label>
-      <label class="done-row">
-        <input type="checkbox" id="edit-done"> Выполнено
-      </label>
-      <div class="modal-actions">
-        <button type="button" id="edit-cancel" class="secondary">Отмена</button>
-        <button type="submit">Сохранить</button>
-      </div>
-    </form>
-    <p>Пользователь: <button type="button" id="task-user"></button></p>
+<dialog id="task-modal" class="task-info-modal">
+    <div class="modal-header">
+      <h2>Просмотр задачи</h2>
+      <button type="button" id="task-close-x" class="modal-close-btn" aria-label="Закрыть">×</button>
+    </div>
+    <div class="modal-body">
+      <p id="task-info-text" class="task-info-text"></p>
+      <p class="task-user-row">Пользователь: <button type="button" id="task-user"></button></p>
+    </div>
   </dialog>
 
   <dialog id="delete-modal">
