@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Массив с ID всех радио-кнопок участников (без главной страницы)
+    
     const personTabs = [
         'tab-davlatbek',
         'tab-abylai',
@@ -11,34 +11,34 @@ document.addEventListener('DOMContentLoaded', () => {
         'tab-task-4'
     ];
 
-    // Находим все кнопки со стрелками
+    
     const prevButtons = document.querySelectorAll('.prev-btn');
     const nextButtons = document.querySelectorAll('.next-btn');
 
     function switchTab(step) {
-        // Находим текущую выбранную radio-кнопку
+        
         const currentChecked = document.querySelector('input[name="tab"]:checked');
         if (!currentChecked) return;
 
-        // Находим индекс текущего участника в нашем массиве
+        
         let currentIndex = personTabs.indexOf(currentChecked.id);
 
-        // Если сейчас выбрана «Главная страница» или неизвестная вкладка — открываем первого
+        
         if (currentIndex === -1) {
             currentIndex = 0;
         } else {
-            // Вычисляем новый индекс с зацикливанием
+            
             currentIndex = (currentIndex + step + personTabs.length) % personTabs.length;
         }
 
-        // Переключаем radio-кнопку на нового участника
+        
         const newRadio = document.getElementById(personTabs[currentIndex]);
         if (newRadio) {
             newRadio.checked = true;
         }
     }
 
-    // Привязываем обработчики событий для всех кнопок "Назад"
+   
     prevButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Привязываем обработчики событий для всех кнопок "Вперед"
+    
     nextButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Дополнительно: переключение кнопками клавиатуры (влево / вправо)
+    
     document.addEventListener('keydown', (e) => {
         const homeRadio = document.getElementById('tab-home');
         if (homeRadio && !homeRadio.checked) {
@@ -68,8 +68,7 @@ const createButton = document.getElementById('create');
 const changeButton = document.getElementById('change');
 const deleteButton = document.getElementById('delete');
 
-// Элементы создаются как отдельные блоки в конце <body>
-// (за карточкой Task-1), а не внутри самой карточки.
+
 createButton.addEventListener('click', () => {
     const newElement = document.createElement('div');
 
@@ -101,29 +100,29 @@ deleteButton.addEventListener('click', () => {
 
 const task1Card = document.getElementById('task1-card');
 
-// --- Пункт 3: Удалите элемент с классом old-element ---
+
 const oldElement = document.querySelector('.old-element');
 if (oldElement) {
     oldElement.remove();
 }
 
-// --- Пункт 4: Создаем элемент <p> с переключением стилей туда-обратно по клику ---
+
 const clickableParagraph = document.createElement('p');
 clickableParagraph.textContent = "Это изменяемый абзац.";
 clickableParagraph.style.cursor = 'pointer';
 clickableParagraph.style.userSelect = 'none';
 
-let isChanged = false; // Флаг для переключения обратно
+let isChanged = false; 
 
 clickableParagraph.addEventListener('click', () => {
     if (!isChanged) {
-        // Первое состояние (меняем)
+        
         clickableParagraph.style.color = '#2f5d44';
         clickableParagraph.style.fontSize = '22px';
         clickableParagraph.style.fontWeight = 'bold';
         isChanged = true;
     } else {
-        // Возвращаем обратно
+        
         clickableParagraph.style.color = '';
         clickableParagraph.style.fontSize = '';
         clickableParagraph.style.fontWeight = '';
@@ -142,16 +141,16 @@ const classesOutput = document.getElementById('classes-output');
 
 if (toggleButton && targetElement && classesOutput) {
     toggleButton.addEventListener('click', () => {
-        // Переключаем класс active (добавляет, если нет, и удаляет, если есть)
+        
         targetElement.classList.toggle('active');
 
-        // Получаем текущие классы элемента в виде строки
+        
         const currentClasses = targetElement.className || 'нет классов';
 
-        // Выводим в консоль
+        
         console.log('Текущие классы элемента:', currentClasses);
 
-        // Выводим в абзац <p> рядом
+        
         classesOutput.textContent = `Текущие классы элемента: ${currentClasses}`;
     });
 }
@@ -190,7 +189,7 @@ createtable.addEventListener('click', () => {
         return;
     }
 
-    // остальной код
+   
      ;
     const table = document.createElement('table');
 for (let i = 0; i < height; i++) {
@@ -246,7 +245,7 @@ function applyThemeLabel() {
         : 'Тёмная тема';
 }
 
-// Восстанавливаем сохранённую тему при загрузке страницы
+
 if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-theme');
 }

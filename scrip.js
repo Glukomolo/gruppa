@@ -22,12 +22,11 @@ const deleteConfirm = document.getElementById("delete-confirm");
 let editing = null;
 let deleting = null;
 
-// Общее хранилище задач: id -> объект задачи (один и тот же объект
-// используется и в главном списке, и в окне задач пользователя)
+
 const itemsById = new Map();
-const registry = new Map();      // id -> ctx строки главного списка
-const deletedIds = new Set();    // удалённые задачи (API только имитирует удаление)
-const fetchedUsers = new Set();  // пользователи, чьи задачи уже загружены
+const registry = new Map();      
+const deletedIds = new Set();    
+const fetchedUsers = new Set();  
 let localCounter = 0;
 
 function remember(item) {
@@ -35,7 +34,7 @@ function remember(item) {
     return itemsById.get(item.id);
 }
 
-// Обновить строку главного списка после изменения задачи
+
 function syncMainItem(item) {
     const ctx = registry.get(item.id);
     if (!ctx) return;
@@ -163,7 +162,7 @@ async function loadUser(userId) {
     return response.json();
 }
 
-// ---------- Окно просмотра задачи (информационное) ----------
+
 const modal = document.getElementById("task-modal");
 
 
@@ -222,7 +221,7 @@ deleteModal.addEventListener("close", () => { deleting = null; });
 
 
 
-// ---------- Окно редактирования задачи ----------
+
 const editModal = document.getElementById("edit-modal");
 const editForm = document.getElementById("edit-form");
 const editText = document.getElementById("edit-text");
@@ -374,7 +373,7 @@ const userEmail = document.getElementById("user-email");
 const userAge = document.getElementById("user-age");
 const userClose = document.getElementById("user-close");
 
-// ---------- Окно задач пользователя ----------
+
 const utList = document.getElementById("ut-list");
 const utForm = document.getElementById("ut-add-form");
 const utInput = document.getElementById("ut-new");
@@ -383,7 +382,7 @@ const utSubtitle = document.getElementById("ut-subtitle");
 const utFilterBtns = document.querySelectorAll(".ut-filter");
 
 let utUserId = null;
-let utFilter = "all";        // all | active | done
+let utFilter = "all";        
 let utEditingId = null;
 let utDeletingId = null;
 let utStatusTimer = null;
@@ -444,7 +443,6 @@ function renderUserTasks() {
 function buildUserTaskRow(item) {
     const li = document.createElement("li");
 
-    // Режим редактирования
     if (utEditingId === item.id) {
         const form = document.createElement("form");
         form.className = "ut-edit-form";
@@ -479,7 +477,6 @@ function buildUserTaskRow(item) {
         return li;
     }
 
-    // Подтверждение удаления
     if (utDeletingId === item.id) {
         const question = document.createElement("span");
         question.textContent = `Удалить «${item.todo}»?`;
@@ -507,7 +504,6 @@ function buildUserTaskRow(item) {
         return li;
     }
 
-    // Обычный режим
     li.classList.toggle("done", item.completed);
 
     const checkbox = document.createElement("input");
@@ -612,11 +608,11 @@ utForm.addEventListener("submit", async (e) => {
         newTodo.id = `local-${++localCounter}`;
         newTodo.userId = userId;
 
-        renderTodoItem(remember(newTodo), true);   // и в главный список
+        renderTodoItem(remember(newTodo), true);   
         updateMainList();
 
         utInput.value = "";
-        if (utFilter === "done") utFilter = "all"; // новая задача «в работе»
+        if (utFilter === "done") utFilter = "all"; 
         utSetStatus("Задача добавлена", false, true);
         if (utUserId === userId) renderUserTasks();
     } catch (error) {
@@ -673,7 +669,6 @@ function openUserModal(user) {
     document.getElementById("user-job").textContent =
         user.company?.title || "Не указано";
 
-    // Окно задач этого пользователя
     utUserId = user.id;
     utFilter = "all";
     utEditingId = null;
@@ -689,7 +684,6 @@ function openUserModal(user) {
 
 userClose.addEventListener("click", () => userModal.close());
 
-// Клик по тёмному фону (вне карточек) закрывает окно
 userModal.addEventListener("click", (e) => {
     if (e.target === userModal || e.target.classList.contains("user-layout")) {
         userModal.close();
