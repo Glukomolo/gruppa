@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Тудушник</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <h1>Тудушник</h1>
 
@@ -46,7 +48,7 @@
     </form>
   </dialog>
 
-<dialog id="task-modal" class="task-info-modal">
+  <dialog id="task-modal" class="task-info-modal">
     <div class="modal-header">
       <h2>Просмотр задачи</h2>
       <button type="button" id="task-close-x" class="modal-close-btn" aria-label="Закрыть">×</button>
@@ -86,22 +88,22 @@
     </div>
   </dialog>
 
- <dialog id="user-modal" class="user-dialog">
+  <dialog id="user-modal" class="user-dialog">
     <div class="user-layout">
 
       <section class="user-tasks" aria-labelledby="ut-title">
         <h2 id="ut-title">Задачи пользователя</h2>
         <p id="ut-subtitle" class="ut-subtitle"></p>
 
-        <form id="ut-add-form" class="ut-add">
-          <input type="text" id="ut-new" placeholder="Новая задача" required>
-          <button type="submit">Добавить</button>
-        </form>
+        <button type="button" id="ut-open-add">Добавить задачу</button>
 
         <div class="ut-filters" role="group" aria-label="Фильтр задач">
-          <button type="button" class="ut-filter active" data-filter="all" aria-pressed="true">Все <span>0</span></button>
-          <button type="button" class="ut-filter" data-filter="active" aria-pressed="false">В работе <span>0</span></button>
-          <button type="button" class="ut-filter" data-filter="done" aria-pressed="false">Готовые <span>0</span></button>
+          <button type="button" class="ut-filter active" data-filter="all" aria-pressed="true">Все
+            <span>0</span></button>
+          <button type="button" class="ut-filter" data-filter="active" aria-pressed="false">В работе
+            <span>0</span></button>
+          <button type="button" class="ut-filter" data-filter="done" aria-pressed="false">Готовые
+            <span>0</span></button>
           <select id="ut-sort" class="ut-sort-select">
             <option value="default">По умолчанию</option>
             <option value="asc">От А до Я</option>
@@ -125,18 +127,53 @@
         <p id="user-id-label" class="user-id-label"></p>
 
         <dl class="user-details">
-          <div><dt>Возраст</dt><dd id="user-age"></dd></div>
-          <div><dt>Email</dt><dd id="user-email"></dd></div>
-          <div><dt>Телефон</dt><dd id="user-phone"></dd></div>
-          <div><dt>Город</dt><dd id="user-city"></dd></div>
-          <div><dt>Компания</dt><dd id="user-company"></dd></div>
-          <div><dt>Должность</dt><dd id="user-job"></dd></div>
+          <div>
+            <dt>Возраст</dt>
+            <dd id="user-age"></dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd id="user-email"></dd>
+          </div>
+          <div>
+            <dt>Телефон</dt>
+            <dd id="user-phone"></dd>
+          </div>
+          <div>
+            <dt>Город</dt>
+            <dd id="user-city"></dd>
+          </div>
+          <div>
+            <dt>Компания</dt>
+            <dd id="user-company"></dd>
+          </div>
+          <div>
+            <dt>Должность</dt>
+            <dd id="user-job"></dd>
+          </div>
         </dl>
       </section>
 
     </div>
   </dialog>
 
+  <dialog id="ut-add-modal">
+    <form id="ut-modal-form">
+      <h2>Новая задача</h2>
+      <input type="text" id="ut-modal-text" placeholder="Что нужно сделать?" required>
+      <label class="field-row">
+        userId
+        <input type="number" id="ut-modal-user-id" placeholder="userId" min="1" readonly>
+      </label>
+      <div class="ut-status" id="ut-modal-status"></div>
+      <div class="modal-actions">
+        <button type="button" id="ut-add-cancel" class="secondary">Отмена</button>
+        <button type="submit">Добавить</button>
+      </div>
+    </form>
+  </dialog>
+
   <script src="scrip.js"></script>
 </body>
+
 </html>

@@ -145,7 +145,8 @@ li.done span.todo-text {
 #add-modal,
 #edit-modal,
 #task-modal,
-#delete-modal {
+#delete-modal,
+#ut-add-modal {
   border: 0;
   border-radius: 10px;
   padding: 24px;
@@ -156,7 +157,8 @@ li.done span.todo-text {
 #add-modal::backdrop,
 #edit-modal::backdrop,
 #task-modal::backdrop,
-#delete-modal::backdrop {
+#delete-modal::backdrop,
+#ut-add-modal::backdrop {
   background: rgba(0, 0, 0, .45);
 }
 
@@ -171,22 +173,35 @@ li.done span.todo-text {
 }
 
 #add-form,
-#edit-form {
+#edit-form,
+#ut-modal-form {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
 #add-form h2,
-#edit-form h2 {
+#edit-form h2,
+#ut-modal-form h2 {
   margin: 0;
 }
 
 #add-form input[type="text"],
 #add-form input[type="number"],
 #edit-form input[type="text"],
-#edit-form input[type="number"] {
+#edit-form input[type="number"],
+#ut-modal-form input[type="text"],
+#ut-modal-form input[type="number"] {
   flex: none;
+}
+
+#ut-modal-form .ut-status {
+  margin: 0;
+}
+
+#ut-open-add {
+  align-self: flex-start;
+  margin-bottom: 12px;
 }
 
 #add-form .status {
@@ -540,44 +555,46 @@ button.small {
   color: #555;
   font-size: 14px;
 }
+
 .ut-filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center; /* выравнивание по центру по вертикали */
-    gap: 6px;
-    margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* выравнивание по центру по вертикали */
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
 .ut-sort-select {
-    padding: 6px 10px;
-    font-size: 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 999px;
-    background: #fff;
-    color: #475569;
-    cursor: pointer;
-    outline: none;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #475569;
+  cursor: pointer;
+  outline: none;
 }
 
 .ut-sort-select:focus {
-    border-color: #2b6cb0;
+  border-color: #2b6cb0;
 }
 
 #todo-filter,
 #todo-sort,
 .ut-sort-select {
-    padding: 6px 10px;
-    font-size: 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 999px;
-    background: #fff;
-    color: #475569;
-    cursor: pointer;
-    outline: none;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #475569;
+  cursor: pointer;
+  outline: none;
 }
 
 #todo-filter:focus,
 #todo-sort:focus,
 .ut-sort-select:focus {
-    border-color: #2b6cb0;
+  border-color: #2b6cb0;
 }

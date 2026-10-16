@@ -438,8 +438,13 @@ const userClose = document.getElementById("user-close");
 
 
 const utList = document.getElementById("ut-list");
-const utForm = document.getElementById("ut-add-form");
-const utInput = document.getElementById("ut-new");
+const utAddModal = document.getElementById("ut-add-modal");
+const utOpenAddBtn = document.getElementById("ut-open-add");
+const utModalForm = document.getElementById("ut-modal-form");
+const utModalText = document.getElementById("ut-modal-text");
+const utModalUserId = document.getElementById("ut-modal-user-id");
+const utModalStatus = document.getElementById("ut-modal-status");
+const utAddCancel = document.getElementById("ut-add-cancel");
 const utStatusEl = document.getElementById("ut-status");
 const utSubtitle = document.getElementById("ut-subtitle");
 const utFilterBtns = document.querySelectorAll(".ut-filter");
@@ -557,14 +562,30 @@ async function toggleUserTask(item, checked) {
     renderUserTasks();
 }
 
-utForm.addEventListener("submit", async (e) => {
+utOpenAddBtn.addEventListener("click", () => {
+    utModalText.value = "";
+    utModalUserId.value = utUserId;
+    utModalStatus.textContent = "";
+    utModalStatus.className = "ut-status";
+    utAddModal.showModal();
+    utModalText.focus();
+});
+
+utAddCancel.addEventListener("click", () => utAddModal.close());
+
+utAddModal.addEventListener("click", (e) => {
+    if (e.target === utAddModal) utAddModal.close();
+});
+
+utModalForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const text = utInput.value.trim();
+    const text = utModalText.value.trim();
     if (!text) return;
 
     const userId = utUserId;
-    utSetStatus("Добавление...");
+    utModalStatus.className = "ut-status";
+    utModalStatus.textContent = "Добавление...";
 
     try {
         const response = await fetch("https://dummyjson.com/todos/add", {
@@ -582,13 +603,14 @@ utForm.addEventListener("submit", async (e) => {
         renderTodoItem(remember(newTodo), true);
         updateMainList();
 
-        utInput.value = "";
         if (utFilter === "done") utFilter = "all";
+        utAddModal.close();
         utSetStatus("Задача добавлена", false, true);
         if (utUserId === userId) renderUserTasks();
     } catch (error) {
         console.error(error);
-        utSetStatus("Не удалось добавить задачу", true);
+        utModalStatus.className = "ut-status error";
+        utModalStatus.textContent = "Не удалось добавить задачу";
     }
 });
 
@@ -650,7 +672,6 @@ function openUserModal(user) {
 
     utUserId = user.id;
     utFilter = "all";
-    utInput.value = "";
     utSetStatus("");
     utSubtitle.textContent = `${user.firstName} ${user.lastName}, ID ${user.id}`;
     renderUserTasks();
