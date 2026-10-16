@@ -351,7 +351,7 @@ function renderTodoItem(item, toTop = false) {
             const user = await loadUser(id);
             if (item.userId !== id) return; // userId успели поменять
             avatar.src = user.image;
-            userNameEl.textContent = `${user.firstName} ${user.lastName}`;
+            userNameEl.textContent = user.username ? `@${user.username}` : `${user.firstName} ${user.lastName}`;
             userBtn.onclick = () => openUserModal(user);
         } catch (error) {
             console.error(error);
